@@ -585,7 +585,16 @@ function resolveR32(gRes){
 }
 function resolveFixed(s,gRes){const nm=gRes[s.slice(1)]?.[parseInt(s[0])];if(!nm)return null;return GROUPS.find(g=>g.id===s.slice(1))?.teams.find(t=>t.n===nm)||null;}
 function buildBracket(){
-  bState={r32:resolveR32(gR),r16:Array(8).fill(0).map(()=>({home:null,away:null,winner:null})),qf:Array(4).fill(0).map(()=>({home:null,away:null,winner:null})),sf:Array(2).fill(0).map(()=>({home:null,away:null,winner:null})),f:[{home:null,away:null,winner:null}]};
+  // Debug: loga os terceiros disponíveis
+  const tercGids=GROUPS.filter(g=>gR[g.id]?.[3]).map(g=>g.id);
+  console.log('[BOLAO] Terceiros selecionados:', tercGids, '(total:', tercGids.length,')');
+  const assignment=assignTerceiros(tercGids);
+  console.log('[BOLAO] Atribuição de terceiros:', assignment);
+  const r32=resolveR32(gR);
+  r32.forEach((m,i)=>{
+    if(!m.home||!m.away) console.warn(`[BOLAO] Jogo ${i} (${m.city}) sem time: home=${m.home?.n} away=${m.away?.n}`);
+  });
+  bState={r32,r16:Array(8).fill(0).map(()=>({home:null,away:null,winner:null})),qf:Array(4).fill(0).map(()=>({home:null,away:null,winner:null})),sf:Array(2).fill(0).map(()=>({home:null,away:null,winner:null})),f:[{home:null,away:null,winner:null}]};
   renderBracketTo('bracket','champ-area',bState,true);
 }
 window.rebuildBracket=()=>buildBracket();
