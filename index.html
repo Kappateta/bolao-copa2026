@@ -168,6 +168,17 @@ a{color:var(--silver);text-decoration:none}
 .sub-tab{padding:6px 14px;background:transparent;border:1px solid var(--border2);border-radius:6px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
 .sub-tab.active{border-color:var(--gold);color:var(--gold)}
 .sent-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(35,134,54,.1);border:1px solid rgba(35,134,54,.3);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--green);margin-bottom:.8rem}
+.countdown-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:.9rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.countdown-left{font-size:12px;color:var(--text2)}
+.countdown-left b{color:var(--text);display:block;font-size:13px;margin-bottom:2px}
+.countdown-digits{display:flex;gap:8px;align-items:center}
+.cd-block{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:6px 10px;text-align:center;min-width:48px}
+.cd-num{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);line-height:1}
+.cd-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.cd-sep{font-size:1.4rem;color:var(--border2);font-weight:700;margin-bottom:12px}
+.deadline-banner{background:rgba(218,54,51,.08);border:1px solid rgba(218,54,51,.3);border-radius:10px;padding:.9rem 1rem;margin-bottom:.9rem;text-align:center}
+.deadline-banner .dbl{font-size:14px;font-weight:700;color:var(--red);margin-bottom:3px}
+.deadline-banner .dbs{font-size:12px;color:var(--text2)}
 
 @media(max-width:600px){
   .groups-grid{grid-template-columns:1fr}
@@ -238,6 +249,26 @@ a{color:var(--silver);text-decoration:none}
 
     <!-- PALPITE -->
     <div id="pane-palpite">
+      <!-- countdown / deadline banner -->
+      <div id="countdown-wrap" class="countdown-wrap">
+        <div class="countdown-left">
+          <b>⏳ Prazo para enviar palpite</b>
+          Encerra às 12h de 11/06 (horário de Brasília)
+        </div>
+        <div class="countdown-digits">
+          <div class="cd-block"><div class="cd-num" id="cd-d">--</div><div class="cd-label">dias</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-h">--</div><div class="cd-label">horas</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-m">--</div><div class="cd-label">min</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><div class="cd-num" id="cd-s">--</div><div class="cd-label">seg</div></div>
+        </div>
+      </div>
+      <div id="deadline-banner" class="deadline-banner" style="display:none">
+        <div class="dbl">🔒 Prazo encerrado!</div>
+        <div class="dbs">O bolão foi fechado. Aguarde os resultados da Copa para ver sua pontuação.</div>
+      </div>
       <!-- já enviado -->
       <div id="palpite-sent" style="display:none">
         <div class="sent-badge">✅ Palpite enviado! Aguardando a Copa começar...</div>
@@ -344,7 +375,20 @@ const firebaseConfig = {
 };
 
 // ADMIN email — troque para o seu email
-const ADMIN_EMAIL = "kappazin27@gmail.com";
+const ADMIN_EMAIL = "carlosfiel2704@gmail.com";
+
+// PRAZO: palpites encerram 1h antes do jogo de abertura (11/06/2026 15:00 UTC = 12:00 Brasília)
+const DEADLINE = new Date('2026-06-11T15:00:00Z');
+function isPastDeadline(){ return new Date() >= DEADLINE; }
+function timeLeft(){
+  const diff = DEADLINE - new Date();
+  if(diff<=0) return null;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  return {d,h,m,s,total:diff};
+}
 
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
@@ -662,8 +706,29 @@ function renderArtilheiro(){
   });
 }
 
+// ── COUNTDOWN ──
+function tickCountdown(){
+  const t=timeLeft();
+  if(!t){
+    document.getElementById('countdown-wrap').style.display='none';
+    document.getElementById('deadline-banner').style.display='';
+    document.getElementById('palpite-form').style.display='none';
+    if(!document.getElementById('palpite-sent').style.display||document.getElementById('palpite-sent').style.display==='none'){
+      // se não enviou palpite, mostra o banner de encerrado
+    }
+    return;
+  }
+  document.getElementById('cd-d').textContent=String(t.d).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(t.h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(t.m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(t.s).padStart(2,'0');
+}
+setInterval(tickCountdown,1000);
+tickCountdown();
+
 // ── ENVIAR PALPITE ──
 window.enviarPalpite = async () => {
+  if(isPastDeadline()){setMsg('env-msg','🔒 Prazo encerrado! Palpites fechados.','err');return;}
   if(!bState?.f[0].winner){setMsg('env-msg','⚠ Complete o chaveamento','err');return;}
   if(selP===null){setMsg('env-msg','⚠ Escolha o artilheiro','err');return;}
   const btn=document.getElementById('btn-enviar');
