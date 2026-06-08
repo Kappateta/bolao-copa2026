@@ -526,14 +526,59 @@ window.goStep2=()=>{
 };
 
 // ── BRACKET ──
+// Tabela oficial da FIFA: dado o conjunto de 8 grupos com terceiros classificados,
+// mapeia qual terceiro vai para qual slot do chaveamento.
+// Slots de terceiro no R32 (índice do jogo → grupos elegíveis):
+// idx 2 → 3ABCDF, idx 3 → 3CDFGH, idx 6 → 3CEFHI, idx 7 → 3EHIJK,
+// idx 8 → 3AEHIJ, idx 9 → 3BEFIJ, idx 10 → 3EFGIJ, idx 11 → 3DEIJL
+// A FIFA define uma tabela que distribui os 8 melhores terceiros nesses 8 slots
+// de forma que cada slot recebe exatamente um terceiro.
+// Usamos um algoritmo de melhor encaixe: para cada slot, atribuímos o terceiro
+// disponível que pertence aos grupos elegíveis daquele slot.
+function assignTerceiros(tercGids) {
+  // Slots que precisam de um terceiro (índice no R32 e grupos elegíveis)
+  const slots = [
+    {idx:2,  valid:'ABCDF'},
+    {idx:3,  valid:'CDFGH'},
+    {idx:6,  valid:'CEFHI'},
+    {idx:7,  valid:'EHIJK'},
+    {idx:8,  valid:'AEHIJ'},
+    {idx:9,  valid:'BEFIJ'},
+    {idx:10, valid:'EFGIJ'},
+    {idx:11, valid:'DEIJL'},
+  ];
+  // Para cada slot, quantos terceiros disponíveis são elegíveis
+  // Usamos atribuição greedy: slot com menos opções é atribuído primeiro
+  const remaining = [...tercGids];
+  const assignment = {}; // idx -> gid
+  // iteramos até atribuir todos os 8
+  for(let pass=0;pass<8;pass++){
+    // encontra o slot não atribuído com menos candidatos disponíveis
+    let bestSlot=null, bestCount=999, bestCandidates=[];
+    for(const s of slots){
+      if(assignment[s.idx]!==undefined)continue;
+      const candidates=remaining.filter(g=>s.valid.includes(g));
+      if(candidates.length<bestCount){bestCount=candidates.length;bestSlot=s;bestCandidates=candidates;}
+    }
+    if(!bestSlot)break;
+    if(bestCandidates.length===0){assignment[bestSlot.idx]=null;continue;}
+    // atribui o primeiro candidato (ordem de seleção do usuário)
+    const chosen=bestCandidates[0];
+    assignment[bestSlot.idx]=chosen;
+    remaining.splice(remaining.indexOf(chosen),1);
+  }
+  return assignment; // {idx: gid}
+}
+
 function resolveR32(gRes){
-  const used=new Set(),tercGids=GROUPS.filter(g=>gRes[g.id]?.[3]).map(g=>g.id);
-  return R32.map(m=>{
+  const tercGids=GROUPS.filter(g=>gRes[g.id]?.[3]).map(g=>g.id);
+  const assignment=assignTerceiros(tercGids);
+  return R32.map((m,idx)=>{
     const home=resolveFixed(m.h,gRes);let away;
     if(m.a[0]==='3'){
-      const valid=m.a.slice(1).split('');
-      const found=tercGids.find(gid=>valid.includes(gid)&&!used.has(gid));
-      if(found){used.add(found);const nm=gRes[found][3];away=GROUPS.find(g=>g.id===found)?.teams.find(t=>t.n===nm)||null;}else away=null;
+      const gid=assignment[idx];
+      if(gid){const nm=gRes[gid][3];away=GROUPS.find(g=>g.id===gid)?.teams.find(t=>t.n===nm)||null;}
+      else away=null;
     }else away=resolveFixed(m.a,gRes);
     return{home,away,city:m.city,winner:null};
   });
