@@ -927,66 +927,263 @@ function setMsg(id,text,type){const el=document.getElementById(id);if(!el)return
 
 // ── ANÁLISE IA ──
 const TEAM_DATA = {
-  // GRUPO A
-  'México':      {fifa:12,atk:74,def:70,form:['W','W','D','L','W'],gols_m:1.6,gols_s:1.1,jogadores:[{n:'Santiago Giménez',pos:'Atacante',d:'Artilheiro do Feyenoord. Centroavante letal na área. Principal referência ofensiva.'},{n:'Orbelín Pineda',pos:'Meia',d:'Criativo e técnico. Motor do jogo mexicano pelo meio.'}]},
-  'Rep. Tcheca': {fifa:36,atk:66,def:65,form:['D','W','L','W','D'],gols_m:1.3,gols_s:1.2,jogadores:[{n:'Patrik Schick',pos:'Atacante',d:'Goleador técnico, forte de cabeça e com boa finalização. Convocado oficial.'},{n:'Tomáš Souček',pos:'Meia',d:'Box-to-box poderoso, contribui em gol e na marcação. Pilar da seleção.'}]},
-  'Coreia do Sul':{fifa:22,atk:68,def:62,form:['W','L','W','W','D'],gols_m:1.5,gols_s:1.4,jogadores:[{n:'Son Heung-min',pos:'Atacante',d:'Capitão e estrela. Rápido e goleador. Líder incontestável da Coreia.'},{n:'Lee Kang-in',pos:'Meia',d:'Criativo e técnico, especialista em bola parada. Convocado.'}]},
-  'África do Sul':{fifa:65,atk:55,def:58,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,jogadores:[{n:'Themba Zwane',pos:'Meia/Ponta',d:'Convocado. O mais técnico da equipe, ativo e imprevisível.'},{n:'Evidence Makgopa',pos:'Atacante',d:'Convocado. Referência ofensiva dos Bafana Bafana.'}]},
-  // GRUPO B
-  'Canadá':      {fifa:48,atk:72,def:67,form:['W','W','W','D','L'],gols_m:1.8,gols_s:1.0,jogadores:[{n:'Alphonso Davies',pos:'Lateral/Ponta',d:'Convocado. Um dos melhores laterais do mundo. Pode destruir qualquer defesa.'},{n:'Jonathan David',pos:'Atacante',d:'Convocado. Artilheiro do Lille. Um dos goleadores mais frios da Europa.'}]},
-  'Suíça':       {fifa:19,atk:68,def:72,form:['W','D','W','W','D'],gols_m:1.4,gols_s:0.8,jogadores:[{n:'Granit Xhaka',pos:'Meia',d:'Convocado. Liderança e experiência. Dita o ritmo do jogo suíço.'},{n:'Breel Embolo',pos:'Atacante',d:'Convocado. Físico avassalador, difícil de marcar individualmente.'}]},
-  'Bósnia':      {fifa:57,atk:62,def:60,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,jogadores:[{n:'Edin Džeko',pos:'Atacante',d:'Convocado. Veterano experiente, ainda perigoso com seu físico.'},{n:'Ermedin Demirovic',pos:'Atacante',d:'Convocado. Artilheiro do Estugarda. Substituição de Džeko na profundidade.'}]},
-  'Catar':       {fifa:58,atk:52,def:55,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.8,jogadores:[{n:'Akram Afif',pos:'Ponta',d:'Convocado. Melhor jogador do Catar, veloz e técnico.'},{n:'Almoez Ali',pos:'Atacante',d:'Convocado. Artilheiro histórico do Catar em Copas.'}]},
-  // GRUPO C
-  'Brasil':      {fifa:5,atk:88,def:80,form:['W','W','W','D','W'],gols_m:2.4,gols_s:0.6,jogadores:[{n:'Vinicius Jr.',pos:'Ponta',d:'Convocado. Melhor do mundo. Dribles, velocidade e gols. Impossível de parar.'},{n:'Raphinha',pos:'Ponta',d:'Convocado pelo Ancelotti. Capitão do Barcelona, técnico e decisivo.'}]},
-  'Marrocos':    {fifa:14,atk:70,def:78,form:['W','W','D','W','D'],gols_m:1.3,gols_s:0.7,jogadores:[{n:'Achraf Hakimi',pos:'Lateral',d:'Convocado. Um dos melhores laterais do mundo. PSG, ofensivo e veloz.'},{n:'Brahim Díaz',pos:'Meia',d:'Convocado. Criatividade e qualidade técnica. Real Madrid/Marrocos.'}]},
-  'Escócia':     {fifa:39,atk:60,def:62,form:['D','W','L','D','W'],gols_m:1.1,gols_s:1.3,jogadores:[{n:'Scott McTominay',pos:'Meia',d:'Convocado. Forte fisicamente e goleador de médio alcance. Napoli.'},{n:'Andy Robertson',pos:'Lateral',d:'Convocado. Capitão e líder defensivo/ofensivo. Liverpool.'}]},
-  'Haiti':       {fifa:83,atk:50,def:48,form:['L','L','D','W','L'],gols_m:0.7,gols_s:2.0,jogadores:[{n:'Frantzdy Pierrot',pos:'Atacante',d:'Convocado. Principal referência ofensiva haitiana.'},{n:'Wilson Isidor',pos:'Atacante',d:'Convocado. Joga no Celta de Vigo. Mais experiente do ataque.'}]},
-  // GRUPO D
-  'EUA':         {fifa:13,atk:73,def:69,form:['W','W','D','W','L'],gols_m:1.7,gols_s:1.1,jogadores:[{n:'Christian Pulisic',pos:'Meia/Ponta',d:'Convocado. Capitão e estrela. Veloz e decisivo no AC Milan.'},{n:'Gio Reyna',pos:'Meia',d:'Convocado. Talento geracional. Criativo e com ótimo passe.'}]},
-  'Turquia':     {fifa:29,atk:71,def:65,form:['W','D','W','L','W'],gols_m:1.6,gols_s:1.2,jogadores:[{n:'Hakan Çalhanoğlu',pos:'Meia',d:'Convocado. Capitão e maestro. Livre-direto preciso. Inter de Milão.'},{n:'Arda Güler',pos:'Meia',d:'Convocado. Joia de 19 anos do Real Madrid. Técnico e imprevisível.'}]},
-  'Austrália':   {fifa:23,atk:65,def:64,form:['W','D','L','W','W'],gols_m:1.4,gols_s:1.2,jogadores:[{n:'Maty Ryan',pos:'Goleiro',d:'Convocado. Titular e liderança no gol australiano.'},{n:'Nestory Irankunda',pos:'Atacante',d:'Convocado. Jovem promessa do Bayern de Munique. Explosivo.'}]},
-  'Paraguai':    {fifa:61,atk:57,def:60,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Miguel Almirón',pos:'Meia',d:'Convocado. O grande nome paraguaio. Rápido e dinâmico.'},{n:'Julio Enciso',pos:'Atacante',d:'Convocado. Joia jovem, técnica refinada e boa finalização.'}]},
-  // GRUPO E
-  'Alemanha':    {fifa:16,atk:82,def:75,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.8,jogadores:[{n:'Florian Wirtz',pos:'Meia',d:'Convocado. Melhor jogador da Bundesliga. Criativo e decisivo.'},{n:'Jamal Musiala',pos:'Meia',d:'Convocado. Prodígio do Bayern. Driblos e visão de jogo excepcionais.'}]},
-  'Costa do Marfim':{fifa:51,atk:68,def:60,form:['W','D','W','L','W'],gols_m:1.4,gols_s:1.3,jogadores:[{n:'Franck Kessié',pos:'Meia',d:'Convocado. Combatividade e gol de médio alcance. Atalanta.'},{n:'Simon Adingra',pos:'Ponta',d:'Convocado. Veloz e elétrico pelo lado. Brighton.'}]},
-  'Equador':     {fifa:44,atk:64,def:65,form:['W','D','D','W','L'],gols_m:1.3,gols_s:1.2,jogadores:[{n:'Enner Valencia',pos:'Atacante',d:'Convocado. Capitão e maior artilheiro histórico do Equador.'},{n:'Moisés Caicedo',pos:'Meia',d:'Convocado. Um dos melhores meias do mundo. Chelsea.'}]},
-  'Curaçao':     {fifa:84,atk:52,def:50,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.9,jogadores:[{n:'Leandro Bacuna',pos:'Meia',d:'Convocado. Principal criador de jogadas da seleção.'},{n:'Tahith Chong',pos:'Ponta',d:'Convocado. Joga no Lugano. Dribla bem e é imprevisível.'}]},
-  // GRUPO F
-  'Holanda':     {fifa:7,atk:80,def:73,form:['W','W','D','W','W'],gols_m:2.0,gols_s:0.9,jogadores:[{n:'Virgil van Dijk',pos:'Zagueiro',d:'Convocado. Um dos melhores zagueiros do mundo. Liverpool.'},{n:'Cody Gakpo',pos:'Ponta',d:'Convocado. Veloz e decisivo. Artilheiro na Copa 2022.'}]},
-  'Japão':       {fifa:17,atk:70,def:68,form:['W','W','D','W','D'],gols_m:1.5,gols_s:0.9,jogadores:[{n:'Takefusa Kubo',pos:'Meia/Ponta',d:'Convocado. Real Sociedad. Técnico e imprevisível, o melhor japonês.'},{n:'Daichi Kamada',pos:'Meia',d:'Convocado. Crystal Palace. Criativo entre as linhas.'}]},
-  'Suécia':      {fifa:24,atk:66,def:66,form:['D','W','D','L','W'],gols_m:1.3,gols_s:1.1,jogadores:[{n:'Viktor Gyökeres',pos:'Atacante',d:'Convocado. Artilheiro do Sporting. Melhor centroavante da temporada europeia.'},{n:'Alexander Isak',pos:'Atacante',d:'Convocado. Newcastle. Rápido, habilidoso e decisivo.'}]},
-  'Tunísia':     {fifa:32,atk:58,def:63,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.3,jogadores:[{n:'Hannibal Mejbri',pos:'Meia',d:'Convocado. Manchester United. Talento da geração nova tunisiana.'},{n:'Ellyes Skhiri',pos:'Meia',d:'Convocado. Frankfurt. Pilar do meio-campo defensivo.'}]},
-  // GRUPO G
-  'Bélgica':     {fifa:3,atk:79,def:72,form:['W','W','W','D','W'],gols_m:2.0,gols_s:0.8,jogadores:[{n:'Kevin De Bruyne',pos:'Meia',d:'Convocado. Um dos melhores do mundo. Visão e passes cirúrgicos.'},{n:'Romelu Lukaku',pos:'Atacante',d:'Convocado. Artilheiro histórico belga. 89 gols pela seleção.'}]},
-  'Egito':       {fifa:34,atk:65,def:64,form:['W','D','W','L','D'],gols_m:1.3,gols_s:1.1,jogadores:[{n:'Mohamed Salah',pos:'Ponta',d:'Convocado. Lendário. Mesmo na Copa, pode decidir sozinho.'},{n:'Mostafa Mohamed',pos:'Atacante',d:'Convocado. Centroavante físico e com bom jogo aéreo.'}]},
-  'Irã':         {fifa:21,atk:62,def:67,form:['W','D','D','W','L'],gols_m:1.2,gols_s:1.0,jogadores:[{n:'Mehdi Taremi',pos:'Atacante',d:'Convocado. Goleador prolífico na Europa, forte e técnico. Inter de Milão.'},{n:'Sardar Azmoun',pos:'Atacante',d:'Convocado. Técnico e letal. Um dos melhores atacantes da Ásia.'}]},
-  'Nova Zelândia':{fifa:95,atk:50,def:52,form:['D','L','W','L','D'],gols_m:0.8,gols_s:1.7,jogadores:[{n:'Chris Wood',pos:'Atacante',d:'Convocado. Artilheiro físico, referência no ataque das All Whites.'},{n:'Cristian Volpato',pos:'Meia',d:'Convocado. Roma. Joga também pela Austrália — confirmou Nova Zelândia.'}]},
-  // GRUPO H
-  'Espanha':     {fifa:8,atk:85,def:78,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.5,jogadores:[{n:'Lamine Yamal',pos:'Ponta',d:'Convocado. Sensação de 18 anos do Barcelona. Já é um dos melhores do mundo.'},{n:'Pedri',pos:'Meia',d:'Convocado. Domínio técnico excepcional. Coração do Barcelona e da Espanha.'}]},
-  'Uruguai':     {fifa:20,atk:72,def:73,form:['W','D','W','W','D'],gols_m:1.5,gols_s:0.9,jogadores:[{n:'Darwin Núñez',pos:'Atacante',d:'Convocado. Explosivo e imprevisível. Velocidade avassaladora. Liverpool.'},{n:'Federico Valverde',pos:'Meia',d:'Convocado. Completo e incansável. Um dos melhores do Real Madrid.'}]},
-  'Arábia Saudita':{fifa:56,atk:58,def:57,form:['W','L','D','L','W'],gols_m:1.0,gols_s:1.5,jogadores:[{n:'Salem Al-Dawsari',pos:'Ponta',d:'Convocado. Herói histórico da Copa de 2022 contra a Argentina.'},{n:'Firas Al-Buraikan',pos:'Atacante',d:'Convocado. Veloz e técnico, o principal nome ofensivo saudita.'}]},
-  'Cabo Verde':  {fifa:78,atk:56,def:58,form:['W','D','L','W','D'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Gilson Benchimol',pos:'Ponta',d:'Convocado. Técnico e veloz, principal criador de Cabo Verde.'},{n:'Ryan Mendes',pos:'Ponta',d:'Convocado. Experiente, driblador nato.'}]},
-  // GRUPO I
-  'França':      {fifa:2,atk:87,def:79,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.6,jogadores:[{n:'Kylian Mbappé',pos:'Atacante',d:'Convocado. O melhor do mundo. Velocidade, gol e assistência. Real Madrid.'},{n:'Antoine Griezmann',pos:'Meia',d:'Convocado. Maestro da seleção francesa. Decisivo em Copas.'}]},
-  'Noruega':     {fifa:43,atk:76,def:64,form:['W','W','D','W','W'],gols_m:2.1,gols_s:1.1,jogadores:[{n:'Erling Haaland',pos:'Atacante',d:'Convocado. O melhor centroavante do mundo. Gols em série pelo City.'},{n:'Martin Ødegaard',pos:'Meia',d:'Convocado. Criativo e técnico. Capitão do Arsenal.'}]},
-  'Senegal':     {fifa:18,atk:69,def:70,form:['W','D','W','W','L'],gols_m:1.4,gols_s:0.9,jogadores:[{n:'Sadio Mané',pos:'Ponta',d:'Convocado. Rápido e técnico. Al-Nassr, mas ainda influente na seleção.'},{n:'Ismaila Sarr',pos:'Ponta',d:'Convocado. Crystal Palace. Veloz e direto, ameaça constante.'}]},
-  'Iraque':      {fifa:67,atk:55,def:54,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.6,jogadores:[{n:'Amjed Attwan',pos:'Meia',d:'Convocado. Criativo, tenta criar jogadas pelo meio para o Iraque.'},{n:'Alaa Abbas',pos:'Atacante',d:'Convocado. Artilheiro histórico da seleção iraquiana.'}]},
-  // GRUPO J
-  'Argentina':   {fifa:1,atk:90,def:82,form:['W','W','W','W','W'],gols_m:2.5,gols_s:0.5,jogadores:[{n:'Lionel Messi',pos:'Meia',d:'Convocado. O GOAT. Mesmo aos 38 anos, pode decidir qualquer jogo.'},{n:'Julián Álvarez',pos:'Atacante',d:'Convocado. Parceiro letal de Messi. Gols e mobilidade. Atlético de Madrid.'}]},
-  'Áustria':     {fifa:25,atk:69,def:66,form:['W','D','W','L','W'],gols_m:1.5,gols_s:1.2,jogadores:[{n:'Marcel Sabitzer',pos:'Meia',d:'Convocado. Combativo e com boa visão de jogo. Manchester United.'},{n:'Christoph Baumgartner',pos:'Meia',d:'Convocado. Criativo. RB Leipzig.'}]},
-  'Argélia':     {fifa:33,atk:66,def:63,form:['W','W','D','L','W'],gols_m:1.4,gols_s:1.2,jogadores:[{n:'Riyad Mahrez',pos:'Ponta',d:'Convocado. Técnico e imprevisível. Al-Ahli. Pode resolver sozinho.'},{n:'Islam Slimani',pos:'Atacante',d:'Convocado. Experiente artilheiro, forte física e tecnicamente.'}]},
-  'Jordânia':    {fifa:87,atk:52,def:52,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,jogadores:[{n:'Musa Al-Taamari',pos:'Ponta',d:'Convocado. Principal jogador jordaniano, veloz e técnico.'},{n:'Hamza Al-Dardour',pos:'Atacante',d:'Convocado. Goleador histórico da Jordânia.'}]},
-  // GRUPO K
-  'Portugal':    {fifa:6,atk:84,def:74,form:['W','W','W','D','W'],gols_m:2.2,gols_s:0.8,jogadores:[{n:'Cristiano Ronaldo',pos:'Atacante',d:'Convocado. Lenda viva. Ainda decisivo com sua experiência. Al-Nassr.'},{n:'Bruno Fernandes',pos:'Meia',d:'Convocado. Motor do jogo português. Gols e assistências. Manchester United.'}]},
-  'Colômbia':    {fifa:11,atk:74,def:68,form:['W','W','D','W','D'],gols_m:1.7,gols_s:0.9,jogadores:[{n:'James Rodríguez',pos:'Meia',d:'Convocado. Técnico refinado. Artilheiro em 2014.'},{n:'Luis Díaz',pos:'Ponta',d:'Convocado. Veloz e dribladôr. Um dos melhores do Liverpool.'}]},
-  'Uzbequistão': {fifa:72,atk:57,def:58,form:['W','D','W','L','D'],gols_m:1.1,gols_s:1.3,jogadores:[{n:'Eldor Shomurodov',pos:'Atacante',d:'Convocado. Jogador do Cagliari. O mais experiente do grupo.'},{n:'Otabek Shukurov',pos:'Meia',d:'Convocado. Técnico e criativo no meio-campo uzbeco.'}]},
-  'RD Congo':    {fifa:73,atk:58,def:56,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Yoane Wissa',pos:'Atacante',d:'Convocado. Veloz e técnico. Brentford. Artilheiro do grupo.'},{n:'Chancel Mbemba',pos:'Zagueiro',d:'Convocado. Líder defensivo, experiente na Europa.'}]},
-  // GRUPO L
-  'Inglaterra':  {fifa:4,atk:83,def:77,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.7,jogadores:[{n:'Harry Kane',pos:'Atacante',d:'Convocado. O artilheiro absoluto. Técnica e posicionamento perfeitos. Bayern.'},{n:'Jude Bellingham',pos:'Meia',d:'Convocado. O jogador mais completo da geração. Real Madrid.'}]},
-  'Croácia':     {fifa:10,atk:70,def:72,form:['D','W','D','W','D'],gols_m:1.3,gols_s:0.9,jogadores:[{n:'Luka Modrić',pos:'Meia',d:'Convocado. Eterno. Ainda é o coração da Croácia. Real Madrid.'},{n:'Mateo Kovačić',pos:'Meia',d:'Convocado. Incansável e criativo. Manchester City.'}]},
-  'Gana':        {fifa:60,atk:60,def:58,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,jogadores:[{n:'Mohammed Kudus',pos:'Meia/Ponta',d:'Convocado. Joia do West Ham. Técnico e decisivo.'},{n:'Jordan Ayew',pos:'Atacante',d:'Convocado. Experiente, cobre muito espaço.'}]},
-  'Panamá':      {fifa:77,atk:54,def:56,form:['D','L','W','D','L'],gols_m:0.9,gols_s:1.5,jogadores:[{n:'Ismael Díaz',pos:'Atacante',d:'Convocado. Principal referência ofensiva do Panamá.'},{n:'Anibal Godoy',pos:'Meia',d:'Convocado. Experiente, organiza o meio-campo.'}]},
+  // Campos: fifa=ranking FIFA, atk/def=força 0-100, form=últimos 5 jogos
+  // passes_m=passes/jogo, prec_pass=precisão passes%, chutes_m=chutes/jogo,
+  // chutes_alvo=chutes no gol/jogo, escanteios_m=escanteios/jogo,
+  // cartoes_a=amarelos/jogo, cartoes_v=vermelhos/jogo, posse=posse média%
+  // confrontos_diretos=histórico recente H-W-D-L
+
+  // ── GRUPO A ──
+  'México':       {fifa:12,atk:74,def:70,form:['W','W','D','L','W'],gols_m:1.6,gols_s:1.1,
+    passes_m:512,prec_pass:84,chutes_m:14.2,chutes_alvo:4.8,escanteios_m:5.4,
+    cartoes_a:1.8,cartoes_v:0.1,posse:54,
+    jogadores:[{n:'Santiago Giménez',pos:'Atacante',d:'Artilheiro do Feyenoord. Centroavante letal na área. Principal referência ofensiva.'},{n:'Orbelín Pineda',pos:'Meia',d:'Criativo e técnico. Motor do jogo mexicano pelo meio.'}]},
+
+  'Rep. Tcheca':  {fifa:36,atk:66,def:65,form:['D','W','L','W','D'],gols_m:1.3,gols_s:1.2,
+    passes_m:468,prec_pass:81,chutes_m:12.1,chutes_alvo:3.9,escanteios_m:4.8,
+    cartoes_a:1.9,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Patrik Schick',pos:'Atacante',d:'Goleador técnico, forte de cabeça e finalização. Convocado oficial.'},{n:'Tomáš Souček',pos:'Meia',d:'Box-to-box poderoso, contribui em gol e na marcação.'}]},
+
+  'Coreia do Sul':{fifa:22,atk:68,def:62,form:['W','L','W','W','D'],gols_m:1.5,gols_s:1.4,
+    passes_m:488,prec_pass:82,chutes_m:13.4,chutes_alvo:4.2,escanteios_m:5.1,
+    cartoes_a:1.7,cartoes_v:0.1,posse:51,
+    jogadores:[{n:'Son Heung-min',pos:'Atacante',d:'Capitão e estrela. Rápido e goleador. Líder incontestável da Coreia.'},{n:'Lee Kang-in',pos:'Meia',d:'Criativo e técnico, especialista em bola parada. Convocado.'}]},
+
+  'África do Sul':{fifa:65,atk:55,def:58,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,
+    passes_m:390,prec_pass:74,chutes_m:9.8,chutes_alvo:3.0,escanteios_m:4.0,
+    cartoes_a:2.1,cartoes_v:0.2,posse:44,
+    jogadores:[{n:'Themba Zwane',pos:'Meia/Ponta',d:'Convocado. O mais técnico da equipe, ativo e imprevisível.'},{n:'Evidence Makgopa',pos:'Atacante',d:'Convocado. Referência ofensiva dos Bafana Bafana.'}]},
+
+  // ── GRUPO B ──
+  'Canadá':       {fifa:48,atk:72,def:67,form:['W','W','W','D','L'],gols_m:1.8,gols_s:1.0,
+    passes_m:498,prec_pass:83,chutes_m:14.8,chutes_alvo:5.0,escanteios_m:5.8,
+    cartoes_a:1.6,cartoes_v:0.1,posse:53,
+    jogadores:[{n:'Alphonso Davies',pos:'Lateral/Ponta',d:'Convocado. Um dos melhores laterais do mundo. Pode destruir qualquer defesa.'},{n:'Jonathan David',pos:'Atacante',d:'Convocado. Artilheiro do Lille. Um dos goleadores mais frios da Europa.'}]},
+
+  'Suíça':        {fifa:19,atk:68,def:72,form:['W','D','W','W','D'],gols_m:1.4,gols_s:0.8,
+    passes_m:532,prec_pass:87,chutes_m:12.8,chutes_alvo:4.1,escanteios_m:4.9,
+    cartoes_a:1.5,cartoes_v:0.05,posse:56,
+    jogadores:[{n:'Granit Xhaka',pos:'Meia',d:'Convocado. Liderança e experiência. Dita o ritmo do jogo suíço.'},{n:'Breel Embolo',pos:'Atacante',d:'Convocado. Físico avassalador, difícil de marcar individualmente.'}]},
+
+  'Bósnia':       {fifa:57,atk:62,def:60,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,
+    passes_m:432,prec_pass:78,chutes_m:11.2,chutes_alvo:3.4,escanteios_m:4.3,
+    cartoes_a:2.0,cartoes_v:0.1,posse:47,
+    jogadores:[{n:'Edin Džeko',pos:'Atacante',d:'Convocado. Veterano experiente, ainda perigoso com seu físico.'},{n:'Ermedin Demirovic',pos:'Atacante',d:'Convocado. Artilheiro do Estugarda. Substituto de Džeko na profundidade.'}]},
+
+  'Catar':        {fifa:58,atk:52,def:55,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.8,
+    passes_m:420,prec_pass:76,chutes_m:9.2,chutes_alvo:2.8,escanteios_m:3.8,
+    cartoes_a:1.9,cartoes_v:0.1,posse:46,
+    jogadores:[{n:'Akram Afif',pos:'Ponta',d:'Convocado. Melhor jogador do Catar, veloz e técnico.'},{n:'Almoez Ali',pos:'Atacante',d:'Convocado. Artilheiro histórico do Catar em Copas.'}]},
+
+  // ── GRUPO C ──
+  'Brasil':       {fifa:5,atk:88,def:80,form:['W','W','W','D','W'],gols_m:2.4,gols_s:0.6,
+    passes_m:558,prec_pass:88,chutes_m:17.2,chutes_alvo:6.4,escanteios_m:6.8,
+    cartoes_a:1.4,cartoes_v:0.05,posse:60,
+    jogadores:[{n:'Vinicius Jr.',pos:'Ponta',d:'Convocado. Melhor do mundo. Dribles, velocidade e gols. Impossível de parar.'},{n:'Raphinha',pos:'Ponta',d:'Convocado pelo Ancelotti. Capitão do Barcelona, técnico e decisivo.'}]},
+
+  'Marrocos':     {fifa:14,atk:70,def:78,form:['W','W','D','W','D'],gols_m:1.3,gols_s:0.7,
+    passes_m:510,prec_pass:85,chutes_m:12.4,chutes_alvo:3.8,escanteios_m:5.2,
+    cartoes_a:1.8,cartoes_v:0.1,posse:52,
+    jogadores:[{n:'Achraf Hakimi',pos:'Lateral',d:'Convocado. Um dos melhores laterais do mundo. PSG, ofensivo e veloz.'},{n:'Brahim Díaz',pos:'Meia',d:'Convocado. Criatividade e qualidade técnica. Real Madrid/Marrocos.'}]},
+
+  'Escócia':      {fifa:39,atk:60,def:62,form:['D','W','L','D','W'],gols_m:1.1,gols_s:1.3,
+    passes_m:455,prec_pass:79,chutes_m:11.0,chutes_alvo:3.2,escanteios_m:4.6,
+    cartoes_a:2.2,cartoes_v:0.1,posse:49,
+    jogadores:[{n:'Scott McTominay',pos:'Meia',d:'Convocado. Forte fisicamente e goleador de médio alcance. Napoli.'},{n:'Andy Robertson',pos:'Lateral',d:'Convocado. Capitão e líder defensivo/ofensivo. Liverpool.'}]},
+
+  'Haiti':        {fifa:83,atk:50,def:48,form:['L','L','D','W','L'],gols_m:0.7,gols_s:2.0,
+    passes_m:350,prec_pass:70,chutes_m:8.2,chutes_alvo:2.2,escanteios_m:3.2,
+    cartoes_a:2.4,cartoes_v:0.2,posse:40,
+    jogadores:[{n:'Frantzdy Pierrot',pos:'Atacante',d:'Convocado. Principal referência ofensiva haitiana.'},{n:'Wilson Isidor',pos:'Atacante',d:'Convocado. Joga no Celta de Vigo. Mais experiente do ataque.'}]},
+
+  // ── GRUPO D ──
+  'EUA':          {fifa:13,atk:73,def:69,form:['W','W','D','W','L'],gols_m:1.7,gols_s:1.1,
+    passes_m:504,prec_pass:83,chutes_m:13.8,chutes_alvo:4.6,escanteios_m:5.5,
+    cartoes_a:1.7,cartoes_v:0.1,posse:53,
+    jogadores:[{n:'Christian Pulisic',pos:'Meia/Ponta',d:'Convocado. Capitão e estrela. Veloz e decisivo no AC Milan.'},{n:'Gio Reyna',pos:'Meia',d:'Convocado. Talento geracional. Criativo e com ótimo passe.'}]},
+
+  'Turquia':      {fifa:29,atk:71,def:65,form:['W','D','W','L','W'],gols_m:1.6,gols_s:1.2,
+    passes_m:496,prec_pass:82,chutes_m:13.5,chutes_alvo:4.4,escanteios_m:5.3,
+    cartoes_a:2.1,cartoes_v:0.15,posse:52,
+    jogadores:[{n:'Hakan Çalhanoğlu',pos:'Meia',d:'Convocado. Capitão e maestro. Livre-direto preciso. Inter de Milão.'},{n:'Arda Güler',pos:'Meia',d:'Convocado. Joia de 19 anos do Real Madrid. Técnico e imprevisível.'}]},
+
+  'Austrália':    {fifa:23,atk:65,def:64,form:['W','D','L','W','W'],gols_m:1.4,gols_s:1.2,
+    passes_m:462,prec_pass:80,chutes_m:12.2,chutes_alvo:3.8,escanteios_m:4.9,
+    cartoes_a:1.8,cartoes_v:0.1,posse:49,
+    jogadores:[{n:'Maty Ryan',pos:'Goleiro',d:'Convocado. Titular e liderança no gol australiano.'},{n:'Nestory Irankunda',pos:'Atacante',d:'Convocado. Jovem promessa do Bayern de Munique. Explosivo.'}]},
+
+  'Paraguai':     {fifa:61,atk:57,def:60,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,
+    passes_m:422,prec_pass:77,chutes_m:10.4,chutes_alvo:3.1,escanteios_m:4.2,
+    cartoes_a:2.3,cartoes_v:0.15,posse:46,
+    jogadores:[{n:'Miguel Almirón',pos:'Meia',d:'Convocado. O grande nome paraguaio. Rápido e dinâmico.'},{n:'Julio Enciso',pos:'Atacante',d:'Convocado. Joia jovem, técnica refinada e boa finalização.'}]},
+
+  // ── GRUPO E ──
+  'Alemanha':     {fifa:16,atk:82,def:75,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.8,
+    passes_m:572,prec_pass:89,chutes_m:16.8,chutes_alvo:5.9,escanteios_m:6.4,
+    cartoes_a:1.5,cartoes_v:0.05,posse:62,
+    jogadores:[{n:'Florian Wirtz',pos:'Meia',d:'Convocado. Melhor jogador da Bundesliga. Criativo e decisivo.'},{n:'Jamal Musiala',pos:'Meia',d:'Convocado. Prodígio do Bayern. Dribles e visão de jogo excepcionais.'}]},
+
+  'Costa do Marfim':{fifa:51,atk:68,def:60,form:['W','D','W','L','W'],gols_m:1.4,gols_s:1.3,
+    passes_m:458,prec_pass:79,chutes_m:13.0,chutes_alvo:4.0,escanteios_m:5.0,
+    cartoes_a:2.0,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Franck Kessié',pos:'Meia',d:'Convocado. Combatividade e gol de médio alcance. Atalanta.'},{n:'Simon Adingra',pos:'Ponta',d:'Convocado. Veloz e elétrico pelo lado. Brighton.'}]},
+
+  'Equador':      {fifa:44,atk:64,def:65,form:['W','D','D','W','L'],gols_m:1.3,gols_s:1.2,
+    passes_m:468,prec_pass:80,chutes_m:12.0,chutes_alvo:3.7,escanteios_m:4.8,
+    cartoes_a:1.9,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Enner Valencia',pos:'Atacante',d:'Convocado. Capitão e maior artilheiro histórico do Equador.'},{n:'Moisés Caicedo',pos:'Meia',d:'Convocado. Um dos melhores meias do mundo. Chelsea.'}]},
+
+  'Curaçao':      {fifa:84,atk:52,def:50,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.9,
+    passes_m:360,prec_pass:71,chutes_m:8.8,chutes_alvo:2.5,escanteios_m:3.5,
+    cartoes_a:2.2,cartoes_v:0.2,posse:42,
+    jogadores:[{n:'Leandro Bacuna',pos:'Meia',d:'Convocado. Principal criador de jogadas da seleção.'},{n:'Tahith Chong',pos:'Ponta',d:'Convocado. Dribla bem e é imprevisível.'}]},
+
+  // ── GRUPO F ──
+  'Holanda':      {fifa:7,atk:80,def:73,form:['W','W','D','W','W'],gols_m:2.0,gols_s:0.9,
+    passes_m:548,prec_pass:87,chutes_m:15.8,chutes_alvo:5.6,escanteios_m:6.2,
+    cartoes_a:1.6,cartoes_v:0.05,posse:58,
+    jogadores:[{n:'Virgil van Dijk',pos:'Zagueiro',d:'Convocado. Um dos melhores zagueiros do mundo. Liverpool.'},{n:'Cody Gakpo',pos:'Ponta',d:'Convocado. Veloz e decisivo. Artilheiro na Copa 2022.'}]},
+
+  'Japão':        {fifa:17,atk:70,def:68,form:['W','W','D','W','D'],gols_m:1.5,gols_s:0.9,
+    passes_m:506,prec_pass:85,chutes_m:13.2,chutes_alvo:4.3,escanteios_m:5.0,
+    cartoes_a:1.4,cartoes_v:0.05,posse:55,
+    jogadores:[{n:'Takefusa Kubo',pos:'Meia/Ponta',d:'Convocado. Real Sociedad. Técnico e imprevisível, o melhor japonês.'},{n:'Daichi Kamada',pos:'Meia',d:'Convocado. Crystal Palace. Criativo entre as linhas.'}]},
+
+  'Suécia':       {fifa:24,atk:66,def:66,form:['D','W','D','L','W'],gols_m:1.3,gols_s:1.1,
+    passes_m:484,prec_pass:82,chutes_m:12.6,chutes_alvo:3.9,escanteios_m:5.0,
+    cartoes_a:1.8,cartoes_v:0.1,posse:52,
+    jogadores:[{n:'Viktor Gyökeres',pos:'Atacante',d:'Convocado. Artilheiro do Sporting. Melhor centroavante da temporada europeia.'},{n:'Alexander Isak',pos:'Atacante',d:'Convocado. Newcastle. Rápido, habilidoso e decisivo.'}]},
+
+  'Tunísia':      {fifa:32,atk:58,def:63,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.3,
+    passes_m:440,prec_pass:78,chutes_m:10.5,chutes_alvo:3.1,escanteios_m:4.4,
+    cartoes_a:2.0,cartoes_v:0.1,posse:48,
+    jogadores:[{n:'Hannibal Mejbri',pos:'Meia',d:'Convocado. Manchester United. Talento da geração nova tunisiana.'},{n:'Ellyes Skhiri',pos:'Meia',d:'Convocado. Frankfurt. Pilar do meio-campo defensivo.'}]},
+
+  // ── GRUPO G ──
+  'Bélgica':      {fifa:3,atk:79,def:72,form:['W','W','W','D','W'],gols_m:2.0,gols_s:0.8,
+    passes_m:544,prec_pass:87,chutes_m:15.4,chutes_alvo:5.4,escanteios_m:6.0,
+    cartoes_a:1.6,cartoes_v:0.05,posse:57,
+    jogadores:[{n:'Kevin De Bruyne',pos:'Meia',d:'Convocado. Um dos melhores do mundo. Visão e passes cirúrgicos.'},{n:'Romelu Lukaku',pos:'Atacante',d:'Convocado. Artilheiro histórico belga. 89 gols pela seleção.'}]},
+
+  'Egito':        {fifa:34,atk:65,def:64,form:['W','D','W','L','D'],gols_m:1.3,gols_s:1.1,
+    passes_m:462,prec_pass:80,chutes_m:12.0,chutes_alvo:3.8,escanteios_m:5.0,
+    cartoes_a:1.9,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Mohamed Salah',pos:'Ponta',d:'Convocado. Lendário. Mesmo na Copa, pode decidir sozinho.'},{n:'Mostafa Mohamed',pos:'Atacante',d:'Convocado. Centroavante físico e com bom jogo aéreo.'}]},
+
+  'Irã':          {fifa:21,atk:62,def:67,form:['W','D','D','W','L'],gols_m:1.2,gols_s:1.0,
+    passes_m:466,prec_pass:80,chutes_m:11.4,chutes_alvo:3.5,escanteios_m:4.6,
+    cartoes_a:2.0,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Mehdi Taremi',pos:'Atacante',d:'Convocado. Goleador prolífico na Europa. Inter de Milão.'},{n:'Sardar Azmoun',pos:'Atacante',d:'Convocado. Técnico e letal. Um dos melhores atacantes da Ásia.'}]},
+
+  'Nova Zelândia':{fifa:95,atk:50,def:52,form:['D','L','W','L','D'],gols_m:0.8,gols_s:1.7,
+    passes_m:348,prec_pass:69,chutes_m:8.0,chutes_alvo:2.2,escanteios_m:3.0,
+    cartoes_a:2.1,cartoes_v:0.15,posse:40,
+    jogadores:[{n:'Chris Wood',pos:'Atacante',d:'Convocado. Artilheiro físico, referência no ataque das All Whites.'},{n:'Cristian Volpato',pos:'Meia',d:'Convocado. Roma. Mais talentoso tecnicamente.'}]},
+
+  // ── GRUPO H ──
+  'Espanha':      {fifa:8,atk:85,def:78,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.5,
+    passes_m:604,prec_pass:91,chutes_m:17.0,chutes_alvo:6.0,escanteios_m:7.2,
+    cartoes_a:1.3,cartoes_v:0.05,posse:66,
+    jogadores:[{n:'Lamine Yamal',pos:'Ponta',d:'Convocado. Sensação de 18 anos do Barcelona. Já é um dos melhores do mundo.'},{n:'Pedri',pos:'Meia',d:'Convocado. Domínio técnico excepcional. Coração do Barcelona e da Espanha.'}]},
+
+  'Uruguai':      {fifa:20,atk:72,def:73,form:['W','D','W','W','D'],gols_m:1.5,gols_s:0.9,
+    passes_m:498,prec_pass:83,chutes_m:13.0,chutes_alvo:4.2,escanteios_m:5.2,
+    cartoes_a:2.0,cartoes_v:0.1,posse:52,
+    jogadores:[{n:'Darwin Núñez',pos:'Atacante',d:'Convocado. Explosivo e imprevisível. Velocidade avassaladora. Liverpool.'},{n:'Federico Valverde',pos:'Meia',d:'Convocado. Completo e incansável. Um dos melhores do Real Madrid.'}]},
+
+  'Arábia Saudita':{fifa:56,atk:58,def:57,form:['W','L','D','L','W'],gols_m:1.0,gols_s:1.5,
+    passes_m:418,prec_pass:76,chutes_m:10.2,chutes_alvo:3.0,escanteios_m:4.0,
+    cartoes_a:2.0,cartoes_v:0.1,posse:46,
+    jogadores:[{n:'Salem Al-Dawsari',pos:'Ponta',d:'Convocado. Herói histórico da Copa de 2022 contra a Argentina.'},{n:'Firas Al-Buraikan',pos:'Atacante',d:'Convocado. Veloz e técnico, o principal nome ofensivo saudita.'}]},
+
+  'Cabo Verde':   {fifa:78,atk:56,def:58,form:['W','D','L','W','D'],gols_m:1.0,gols_s:1.4,
+    passes_m:388,prec_pass:73,chutes_m:9.8,chutes_alvo:2.9,escanteios_m:3.8,
+    cartoes_a:2.1,cartoes_v:0.1,posse:44,
+    jogadores:[{n:'Gilson Benchimol',pos:'Ponta',d:'Convocado. Técnico e veloz, principal criador de Cabo Verde.'},{n:'Ryan Mendes',pos:'Ponta',d:'Convocado. Experiente, driblador nato.'}]},
+
+  // ── GRUPO I ──
+  'França':       {fifa:2,atk:87,def:79,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.6,
+    passes_m:578,prec_pass:89,chutes_m:17.4,chutes_alvo:6.2,escanteios_m:6.8,
+    cartoes_a:1.4,cartoes_v:0.05,posse:60,
+    jogadores:[{n:'Kylian Mbappé',pos:'Atacante',d:'Convocado. O melhor do mundo. Velocidade, gol e assistência. Real Madrid.'},{n:'Antoine Griezmann',pos:'Meia',d:'Convocado. Maestro da seleção francesa. Decisivo em Copas.'}]},
+
+  'Noruega':      {fifa:43,atk:76,def:64,form:['W','W','D','W','W'],gols_m:2.1,gols_s:1.1,
+    passes_m:488,prec_pass:82,chutes_m:15.2,chutes_alvo:5.4,escanteios_m:5.8,
+    cartoes_a:1.7,cartoes_v:0.1,posse:53,
+    jogadores:[{n:'Erling Haaland',pos:'Atacante',d:'Convocado. O melhor centroavante do mundo. Gols em série pelo City.'},{n:'Martin Ødegaard',pos:'Meia',d:'Convocado. Criativo e técnico. Capitão do Arsenal.'}]},
+
+  'Senegal':      {fifa:18,atk:69,def:70,form:['W','D','W','W','L'],gols_m:1.4,gols_s:0.9,
+    passes_m:476,prec_pass:81,chutes_m:12.6,chutes_alvo:4.0,escanteios_m:5.2,
+    cartoes_a:1.8,cartoes_v:0.1,posse:51,
+    jogadores:[{n:'Sadio Mané',pos:'Ponta',d:'Convocado. Rápido e técnico. Al-Nassr, ainda influente na seleção.'},{n:'Ismaila Sarr',pos:'Ponta',d:'Convocado. Crystal Palace. Veloz e direto, ameaça constante.'}]},
+
+  'Iraque':       {fifa:67,atk:55,def:54,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.6,
+    passes_m:380,prec_pass:72,chutes_m:9.4,chutes_alvo:2.8,escanteios_m:3.8,
+    cartoes_a:2.2,cartoes_v:0.15,posse:43,
+    jogadores:[{n:'Amjed Attwan',pos:'Meia',d:'Convocado. Criativo, tenta criar jogadas pelo meio para o Iraque.'},{n:'Alaa Abbas',pos:'Atacante',d:'Convocado. Artilheiro histórico da seleção iraquiana.'}]},
+
+  // ── GRUPO J ──
+  'Argentina':    {fifa:1,atk:90,def:82,form:['W','W','W','W','W'],gols_m:2.5,gols_s:0.5,
+    passes_m:566,prec_pass:88,chutes_m:17.8,chutes_alvo:6.6,escanteios_m:6.6,
+    cartoes_a:1.5,cartoes_v:0.05,posse:58,
+    jogadores:[{n:'Lionel Messi',pos:'Meia',d:'Convocado. O GOAT. Mesmo aos 38 anos, pode decidir qualquer jogo.'},{n:'Julián Álvarez',pos:'Atacante',d:'Convocado. Parceiro letal de Messi. Gols e mobilidade. Atlético de Madrid.'}]},
+
+  'Áustria':      {fifa:25,atk:69,def:66,form:['W','D','W','L','W'],gols_m:1.5,gols_s:1.2,
+    passes_m:502,prec_pass:84,chutes_m:13.2,chutes_alvo:4.2,escanteios_m:5.3,
+    cartoes_a:1.8,cartoes_v:0.1,posse:54,
+    jogadores:[{n:'Marcel Sabitzer',pos:'Meia',d:'Convocado. Combativo e com boa visão de jogo. Manchester United.'},{n:'Christoph Baumgartner',pos:'Meia',d:'Convocado. Criativo. RB Leipzig.'}]},
+
+  'Argélia':      {fifa:33,atk:66,def:63,form:['W','W','D','L','W'],gols_m:1.4,gols_s:1.2,
+    passes_m:460,prec_pass:80,chutes_m:12.4,chutes_alvo:3.8,escanteios_m:4.8,
+    cartoes_a:1.9,cartoes_v:0.1,posse:50,
+    jogadores:[{n:'Riyad Mahrez',pos:'Ponta',d:'Convocado. Técnico e imprevisível. Al-Ahli. Pode resolver sozinho.'},{n:'Islam Slimani',pos:'Atacante',d:'Convocado. Experiente artilheiro, forte física e tecnicamente.'}]},
+
+  'Jordânia':     {fifa:87,atk:52,def:52,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,
+    passes_m:362,prec_pass:71,chutes_m:8.8,chutes_alvo:2.5,escanteios_m:3.4,
+    cartoes_a:2.2,cartoes_v:0.15,posse:42,
+    jogadores:[{n:'Musa Al-Taamari',pos:'Ponta',d:'Convocado. Principal jogador jordaniano, veloz e técnico.'},{n:'Hamza Al-Dardour',pos:'Atacante',d:'Convocado. Goleador histórico da Jordânia.'}]},
+
+  // ── GRUPO K ──
+  'Portugal':     {fifa:6,atk:84,def:74,form:['W','W','W','D','W'],gols_m:2.2,gols_s:0.8,
+    passes_m:556,prec_pass:88,chutes_m:16.6,chutes_alvo:5.8,escanteios_m:6.6,
+    cartoes_a:1.5,cartoes_v:0.05,posse:59,
+    jogadores:[{n:'Cristiano Ronaldo',pos:'Atacante',d:'Convocado. Lenda viva. Ainda decisivo com sua experiência. Al-Nassr.'},{n:'Bruno Fernandes',pos:'Meia',d:'Convocado. Motor do jogo português. Gols e assistências. Manchester United.'}]},
+
+  'Colômbia':     {fifa:11,atk:74,def:68,form:['W','W','D','W','D'],gols_m:1.7,gols_s:0.9,
+    passes_m:512,prec_pass:84,chutes_m:14.0,chutes_alvo:4.8,escanteios_m:5.6,
+    cartoes_a:1.7,cartoes_v:0.1,posse:54,
+    jogadores:[{n:'James Rodríguez',pos:'Meia',d:'Convocado. Técnico refinado. Artilheiro em 2014.'},{n:'Luis Díaz',pos:'Ponta',d:'Convocado. Veloz e driblador. Um dos melhores do Liverpool.'}]},
+
+  'Uzbequistão':  {fifa:72,atk:57,def:58,form:['W','D','W','L','D'],gols_m:1.1,gols_s:1.3,
+    passes_m:394,prec_pass:74,chutes_m:10.0,chutes_alvo:3.0,escanteios_m:4.0,
+    cartoes_a:2.0,cartoes_v:0.1,posse:45,
+    jogadores:[{n:'Eldor Shomurodov',pos:'Atacante',d:'Convocado. Cagliari. O mais experiente do grupo.'},{n:'Otabek Shukurov',pos:'Meia',d:'Convocado. Técnico e criativo no meio-campo uzbeco.'}]},
+
+  'RD Congo':     {fifa:73,atk:58,def:56,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,
+    passes_m:386,prec_pass:73,chutes_m:9.6,chutes_alvo:2.8,escanteios_m:3.8,
+    cartoes_a:2.1,cartoes_v:0.15,posse:43,
+    jogadores:[{n:'Yoane Wissa',pos:'Atacante',d:'Convocado. Veloz e técnico. Brentford. Artilheiro do grupo.'},{n:'Chancel Mbemba',pos:'Zagueiro',d:'Convocado. Líder defensivo, experiente na Europa.'}]},
+
+  // ── GRUPO L ──
+  'Inglaterra':   {fifa:4,atk:83,def:77,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.7,
+    passes_m:552,prec_pass:87,chutes_m:16.2,chutes_alvo:5.8,escanteios_m:6.4,
+    cartoes_a:1.5,cartoes_v:0.05,posse:58,
+    jogadores:[{n:'Harry Kane',pos:'Atacante',d:'Convocado. O artilheiro absoluto. Técnica e posicionamento perfeitos. Bayern.'},{n:'Jude Bellingham',pos:'Meia',d:'Convocado. O jogador mais completo da geração. Real Madrid.'}]},
+
+  'Croácia':      {fifa:10,atk:70,def:72,form:['D','W','D','W','D'],gols_m:1.3,gols_s:0.9,
+    passes_m:514,prec_pass:85,chutes_m:12.8,chutes_alvo:4.0,escanteios_m:5.2,
+    cartoes_a:1.7,cartoes_v:0.1,posse:55,
+    jogadores:[{n:'Luka Modrić',pos:'Meia',d:'Convocado. Eterno. Ainda é o coração da Croácia. Real Madrid.'},{n:'Mateo Kovačić',pos:'Meia',d:'Convocado. Incansável e criativo. Manchester City.'}]},
+
+  'Gana':         {fifa:60,atk:60,def:58,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,
+    passes_m:420,prec_pass:76,chutes_m:10.8,chutes_alvo:3.2,escanteios_m:4.4,
+    cartoes_a:2.0,cartoes_v:0.1,posse:46,
+    jogadores:[{n:'Mohammed Kudus',pos:'Meia/Ponta',d:'Convocado. Joia do West Ham. Técnico e decisivo.'},{n:'Jordan Ayew',pos:'Atacante',d:'Convocado. Experiente, cobre muito espaço.'}]},
+
+  'Panamá':       {fifa:77,atk:54,def:56,form:['D','L','W','D','L'],gols_m:0.9,gols_s:1.5,
+    passes_m:368,prec_pass:71,chutes_m:9.0,chutes_alvo:2.6,escanteios_m:3.6,
+    cartoes_a:2.3,cartoes_v:0.15,posse:42,
+    jogadores:[{n:'Ismael Díaz',pos:'Atacante',d:'Convocado. Principal referência ofensiva do Panamá.'},{n:'Anibal Godoy',pos:'Meia',d:'Convocado. Experiente, organiza o meio-campo.'}]},
 };
 // Jogos da fase de grupos (3 rodadas, 4 times por grupo = 6 jogos)
 function getGroupMatches(group){
@@ -1071,7 +1268,12 @@ window.abrirAnalise=async(gid,matchIdx)=>{
   const cacheKey=gid+'_'+matchIdx;
 
   const formHTML=(form)=>form.map(r=>`<div class="form-${r==='W'?'w':r==='D'?'d':'l'}">${r}</div>`).join('');
-  const statBar=(val,max,color)=>`<div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${Math.round(val/max*100)}%;background:${color}"></div></div>`;
+  const sb=(val,max,clr)=>`<div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${Math.min(100,Math.round(val/max*100))}%;background:${clr}"></div></div>`;
+  const H='#4a90d9', A='#da3633';
+
+  // Placar mais provável estimado
+  const placarH = Math.round(hd.gols_m * (probs.h/100 + 0.5));
+  const placarA = Math.round(ad.gols_m * (probs.a/100 + 0.5));
 
   document.getElementById('analise-content').innerHTML=`
     <div class="analise-header">
@@ -1094,7 +1296,7 @@ window.abrirAnalise=async(gid,matchIdx)=>{
         </div>
       </div>
       <div class="prob-section">
-        <div class="prob-title">Probabilidades</div>
+        <div class="prob-title">Probabilidades de resultado</div>
         <div class="prob-bar-3">
           <div class="pb3-h" style="width:${probs.h}%">${probs.h}%</div>
           <div class="pb3-d" style="width:${probs.d}%">${probs.d}%</div>
@@ -1104,34 +1306,62 @@ window.abrirAnalise=async(gid,matchIdx)=>{
       </div>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-title">⚔️ Ataque</div>
-        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.atk,100,'#4a90d9')}<span class="stat-val">${hd.atk}</span></div>
-        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.atk,100,'#da3633')}<span class="stat-val">${ad.atk}</span></div>
+    <!-- PLACAR MAIS PROVÁVEL -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.9rem;margin-bottom:.9rem;text-align:center">
+      <div class="prob-title" style="margin-bottom:8px">🎯 Placar mais provável</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px">
+        <div style="text-align:center">
+          <img src="${F(m.home.cc)}" width="28" height="18" style="object-fit:cover;border-radius:2px;margin-bottom:4px" onerror="this.style.opacity=0">
+          <div style="font-size:11px;color:var(--text2)">${m.home.n}</div>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--gold);letter-spacing:.1em">${placarH} – ${placarA}</div>
+        <div style="text-align:center">
+          <img src="${F(m.away.cc)}" width="28" height="18" style="object-fit:cover;border-radius:2px;margin-bottom:4px" onerror="this.style.opacity=0">
+          <div style="font-size:11px;color:var(--text2)">${m.away.n}</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-title">🛡️ Defesa</div>
-        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.def,100,'#4a90d9')}<span class="stat-val">${hd.def}</span></div>
-        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.def,100,'#da3633')}<span class="stat-val">${ad.def}</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-title">⚽ Média de gols marcados</div>
-        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.gols_m,3,'#4a90d9')}<span class="stat-val">${hd.gols_m}</span></div>
-        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.gols_m,3,'#da3633')}<span class="stat-val">${ad.gols_m}</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-title">🚫 Média de gols sofridos</div>
-        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.gols_s,3,'#4a90d9')}<span class="stat-val">${hd.gols_s}</span></div>
-        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.gols_s,3,'#da3633')}<span class="stat-val">${ad.gols_s}</span></div>
-      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:6px">Baseado em médias de gols e probabilidades calculadas</div>
     </div>
 
+    <!-- ESTATÍSTICAS COMPLETAS -->
+    <div class="prob-title" style="margin-bottom:8px">📊 Estatísticas comparativas</div>
+
+    <!-- Barra central de comparação (estilo FIFA) -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.9rem;margin-bottom:.9rem">
+      ${[
+        {label:'⚽ Gols por jogo',    hv:hd.gols_m,  av:ad.gols_m,  max:3,   fmt:v=>v.toFixed(1)},
+        {label:'🚫 Gols sofridos/jogo',hv:hd.gols_s,  av:ad.gols_s,  max:3,   fmt:v=>v.toFixed(1), inv:true},
+        {label:'🎯 Chutes por jogo',  hv:hd.chutes_m, av:ad.chutes_m,max:20,  fmt:v=>v.toFixed(1)},
+        {label:'🎯 Chutes no alvo',   hv:hd.chutes_alvo,av:ad.chutes_alvo,max:8,fmt:v=>v.toFixed(1)},
+        {label:'🔄 Passes por jogo',  hv:hd.passes_m, av:ad.passes_m,max:650, fmt:v=>Math.round(v)},
+        {label:'✅ Precisão passes',  hv:hd.prec_pass, av:ad.prec_pass,max:100,fmt:v=>v+'%'},
+        {label:'🚩 Escanteios/jogo',  hv:hd.escanteios_m,av:ad.escanteios_m,max:9,fmt:v=>v.toFixed(1)},
+        {label:'🟨 Amarelos/jogo',    hv:hd.cartoes_a, av:ad.cartoes_a,max:4,  fmt:v=>v.toFixed(1), inv:true},
+        {label:'🟥 Vermelhos/jogo',   hv:hd.cartoes_v, av:ad.cartoes_v,max:0.5,fmt:v=>v.toFixed(2), inv:true},
+        {label:'⚽ Posse de bola',    hv:hd.posse,    av:ad.posse,   max:100, fmt:v=>v+'%'},
+      ].map(s=>{
+        const ht=s.hv/(s.hv+s.av)*100, at=s.av/(s.hv+s.av)*100;
+        const hBetter = s.inv ? s.hv<=s.av : s.hv>=s.av;
+        return`<div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+            <span style="font-weight:600;color:${hBetter?H:'var(--text2)'}">${s.fmt(s.hv)}</span>
+            <span style="color:var(--text3);font-size:10px">${s.label}</span>
+            <span style="font-weight:600;color:${!hBetter?A:'var(--text2)'}">${s.fmt(s.av)}</span>
+          </div>
+          <div style="display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--bg4)">
+            <div style="width:${ht}%;background:${H};border-radius:3px 0 0 3px;transition:width .6s"></div>
+            <div style="width:${at}%;background:${A};border-radius:0 3px 3px 0;transition:width .6s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- JOGADORES-CHAVE -->
     <div class="jogadores-section">
       <div class="prob-title" style="margin-bottom:8px">⭐ Jogadores-chave</div>
       <div class="jogadores-grid">
         ${[...hd.jogadores||[],...ad.jogadores||[]].map((j,i)=>`
-        <div class="jogador-card" style="border-left:3px solid ${i<2?'#4a90d9':'#da3633'}">
+        <div class="jogador-card" style="border-left:3px solid ${i<2?H:A}">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
             ${fi(i<2?m.home.cc:m.away.cc,18,12)}
             <div class="jogador-nome">${j.n}</div>
@@ -1169,6 +1399,16 @@ window.abrirAnalise=async(gid,matchIdx)=>{
     // Gera via API usando o proxy do Claude.ai (funciona em artifacts)
     // No GitHub Pages, a API direta é bloqueada por CORS.
     // Usamos análise pré-gerada baseada nos dados do time como fallback.
+    const prompt=`Você é um especialista em análise de futebol. Analise o jogo da fase de grupos da Copa do Mundo 2026:
+
+${m.home.n} (FIFA #${hd.fifa} | Posse: ${hd.posse}% | Gols/jogo: ${hd.gols_m} | Gols sofridos/jogo: ${hd.gols_s} | Chutes/jogo: ${hd.chutes_m} | Chutes no alvo: ${hd.chutes_alvo} | Passes/jogo: ${hd.passes_m} | Precisão passes: ${hd.prec_pass}% | Escanteios/jogo: ${hd.escanteios_m} | Amarelos/jogo: ${hd.cartoes_a} | Vermelhos/jogo: ${hd.cartoes_v} | Forma: ${hd.form.join('-')})
+vs
+${m.away.n} (FIFA #${ad.fifa} | Posse: ${ad.posse}% | Gols/jogo: ${ad.gols_m} | Gols sofridos/jogo: ${ad.gols_s} | Chutes/jogo: ${ad.chutes_m} | Chutes no alvo: ${ad.chutes_alvo} | Passes/jogo: ${ad.passes_m} | Precisão passes: ${ad.prec_pass}% | Escanteios/jogo: ${ad.escanteios_m} | Amarelos/jogo: ${ad.cartoes_a} | Vermelhos/jogo: ${ad.cartoes_v} | Forma: ${ad.form.join('-')})
+
+Probabilidades calculadas: ${m.home.n} ${probs.h}% | Empate ${probs.d}% | ${m.away.n} ${probs.a}%
+
+Responda em português com exatamente este formato JSON (sem markdown, sem explicações):
+{"texto":"<3 parágrafos: (1) contexto e importância do jogo no grupo, (2) análise tática com base nas estatísticas — posse, passes, chutes, escanteios e tendência de cartões de cada time, (3) o que esperar — ritmo do jogo, onde o confronto será decidido>","palpite":"<Uma frase com palpite de placar justificado pelos dados>"}`;
     try{
       const resp=await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
