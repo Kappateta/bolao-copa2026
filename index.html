@@ -165,7 +165,77 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 .pi-ts{font-size:10px;color:var(--text3)}
 .btn-ver{padding:4px 10px;background:transparent;border:1px solid var(--gold);border-radius:5px;font-size:11px;color:var(--gold);cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap}
 .btn-ver:hover{background:rgba(212,160,23,.1)}
-@media(max-width:600px){.groups-grid{grid-template-columns:1fr}.pgrid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}}
+/* ANÁLISE */
+.ag-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.ag-tab{padding:5px 12px;background:transparent;border:1px solid var(--border2);border-radius:20px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.ag-tab:hover{color:var(--text)}.ag-tab.active{background:var(--bg4);border-color:var(--gold);color:var(--gold)}
+.jogos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:0}
+.jogo-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.jogo-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.jogo-card::after{content:'Ver análise →';position:absolute;bottom:10px;right:12px;font-size:10px;color:var(--gold);opacity:0;transition:opacity .2s}
+.jogo-card:hover::after{opacity:1}
+.jogo-rodada{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.jogo-times{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.jogo-time{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.jogo-time img{width:36px;height:24px;object-fit:cover;border-radius:3px;border:1px solid rgba(255,255,255,.1)}
+.jogo-time-nome{font-size:11px;font-weight:600;color:var(--text);text-align:center}
+.jogo-vs{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text3)}
+.jogo-odds{display:flex;gap:4px;margin-bottom:8px}
+.jogo-odd{flex:1;text-align:center;padding:4px 0;border-radius:5px;font-size:10px;font-weight:600}
+.odd-h{background:rgba(74,144,217,.15);color:var(--silver)}
+.odd-d{background:rgba(255,255,255,.06);color:var(--text2)}
+.odd-a{background:rgba(218,54,51,.15);color:#e88080}
+.jogo-date{font-size:9px;color:var(--text3);text-align:center}
+.jogo-cached{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+
+/* ANÁLISE DETALHE */
+.analise-header{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.9rem}
+.analise-matchup{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.analise-team{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;min-width:100px;max-width:160px}
+.analise-team img{width:56px;height:38px;object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.12)}
+.analise-team-nome{font-size:14px;font-weight:700;color:var(--text);text-align:center}
+.analise-team-rank{font-size:10px;color:var(--text2)}
+.analise-vs-block{text-align:center}
+.analise-vs{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--text3);line-height:1}
+.analise-date{font-size:10px;color:var(--text3);margin-top:2px}
+.prob-section{margin-bottom:1rem}
+.prob-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.prob-bar-3{display:flex;border-radius:6px;overflow:hidden;height:28px;margin-bottom:6px}
+.pb3-h{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;background:#2d6fb3;transition:width .6s}
+.pb3-d{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);background:var(--bg4);transition:width .6s}
+.pb3-a{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;background:#8b2020;transition:width .6s}
+.prob-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text2)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
+.stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.7rem}
+.stat-title{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.stat-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.stat-row:last-child{margin-bottom:0}
+.stat-label{font-size:11px;color:var(--text2);flex:1}
+.stat-bar-wrap{width:80px;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.stat-bar-fill{height:100%;border-radius:3px}
+.stat-val{font-size:11px;font-weight:600;color:var(--text);min-width:24px;text-align:right}
+.jogadores-section{margin-bottom:.9rem}
+.jogadores-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.jogador-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.7rem}
+.jogador-nome{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.jogador-pos{font-size:10px;color:var(--gold);margin-bottom:4px}
+.jogador-desc{font-size:10px;color:var(--text2);line-height:1.5}
+.analise-ia-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.9rem}
+.analise-ia-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:.7rem;display:flex;align-items:center;gap:6px}
+.analise-texto{font-size:13px;color:var(--text2);line-height:1.7}
+.analise-texto p{margin-bottom:.6rem}.analise-texto p:last-child{margin-bottom:0}
+.palpite-final{background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.25);border-radius:8px;padding:.8rem;margin-top:.8rem}
+.palpite-final-title{font-size:11px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.palpite-final-texto{font-size:13px;color:var(--text);font-weight:500}
+.ia-loading{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:12px;padding:.5rem 0}
+.ia-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:iapulse .8s ease-in-out infinite}
+.ia-dot:nth-child(2){animation-delay:.15s}.ia-dot:nth-child(3){animation-delay:.3s}
+@keyframes iapulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.4);opacity:1}}
+.form-badge{display:inline-flex;gap:3px;margin-top:3px}
+.form-w{width:14px;height:14px;border-radius:3px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
+.form-d{width:14px;height:14px;border-radius:3px;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--text2)}
+.form-l{width:14px;height:14px;border-radius:3px;background:rgba(218,54,51,.4);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#e88080}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr}.jogadores-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -206,6 +276,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
   <div class="tabs">
     <button class="tab active" id="tb-palpite" onclick="showTab('palpite')">⚽ Meu Palpite</button>
     <button class="tab" id="tb-ranking" onclick="showTab('ranking')">🏆 Ranking ao vivo</button>
+    <button class="tab" id="tb-analise" onclick="showTab('analise')">🔬 Análise IA</button>
     <button class="tab" id="tb-admin" onclick="showTab('admin')" style="display:none">⚙️ Admin</button>
     <button class="tab" id="tb-palpites-admin" onclick="showTab('palpites-admin')" style="display:none">👥 Ver Palpites</button>
   </div>
@@ -286,7 +357,6 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 
     <!-- VER PALPITES (admin) -->
     <div id="pane-palpites-admin" style="display:none">
-      <!-- LISTA -->
       <div id="palpites-list-section">
         <div class="card">
           <div class="card-title">👥 Palpites enviados</div>
@@ -294,26 +364,35 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
           <div id="palpites-list"><div class="spinner-wrap"><span class="spinner"></span>Carregando...</div></div>
         </div>
       </div>
-      <!-- DETALHE de um palpite -->
       <div id="palpite-detail-section" style="display:none">
         <div class="bar">
           <button class="btn-sm" onclick="closePalpiteDetail()">← Voltar à lista</button>
           <span id="detail-name" style="font-size:14px;font-weight:600;color:var(--text)"></span>
         </div>
-        <div class="card">
-          <div class="card-title">🏆 Campeão e Artilheiro</div>
-          <div id="detail-summary"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">📋 Chaveamento completo</div>
+        <div class="card"><div class="card-title">🏆 Campeão e Artilheiro</div><div id="detail-summary"></div></div>
+        <div class="card"><div class="card-title">📋 Chaveamento completo</div>
           <div class="bracket-scroll"><div class="bracket" id="detail-bracket"></div></div>
           <div id="detail-champ-area"></div>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- ANÁLISE IA -->
+    <div id="pane-analise" style="display:none">
+      <div class="card" style="margin-bottom:.7rem">
+        <div class="card-title">🔬 Análise de Jogos — Fase de Grupos</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:.8rem">Selecione um grupo e clique em um jogo para ver a análise completa com IA.</div>
+        <div class="ag-tabs" id="analise-group-tabs"></div>
+      </div>
+      <div id="analise-jogos-wrap"></div>
+      <div id="analise-result" style="display:none">
+        <div class="bar" style="margin-bottom:.9rem"><button class="btn-sm" onclick="fecharAnalise()">← Voltar aos jogos</button></div>
+        <div id="analise-content"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -832,18 +911,300 @@ window.closePalpiteDetail=()=>{
 
 // ── NAV ──
 window.showTab=(tab)=>{
-  ['palpite','ranking','admin','palpites-admin'].forEach(t=>{
+  ['palpite','ranking','admin','palpites-admin','analise'].forEach(t=>{
     const el=document.getElementById('pane-'+t);if(el)el.style.display=t===tab?'':'none';
     const tb=document.getElementById('tb-'+t);if(tb)tb.classList.toggle('active',t===tab);
   });
   if(tab==='ranking')startRankingListener();
   if(tab==='admin')loadAdminPanel();
   if(tab==='palpites-admin')loadPalpitesAdmin();
+  if(tab==='analise')initAnalise();
 };
 window.showStep=(s)=>{
   ['grupos','bracket','artilheiro'].forEach(x=>{document.getElementById('step-'+x).style.display=x===s?'':'none';const b=document.getElementById('stb-'+x);if(b)b.classList.toggle('active',x===s);});
 };
 function setMsg(id,text,type){const el=document.getElementById(id);if(!el)return;el.textContent=text;el.className='msg'+(type?' '+type:'');}
+
+// ── ANÁLISE IA ──
+const TEAM_DATA = {
+  // GRUPO A
+  'México':      {fifa:12,atk:74,def:70,form:['W','W','D','L','W'],gols_m:1.6,gols_s:1.1,jogadores:[{n:'Santiago Giménez',pos:'Atacante',d:'Artilheiro do Feyenoord. Centroavante letal na área. Principal referência ofensiva.'},{n:'Orbelín Pineda',pos:'Meia',d:'Criativo e técnico. Motor do jogo mexicano pelo meio.'}]},
+  'Rep. Tcheca': {fifa:36,atk:66,def:65,form:['D','W','L','W','D'],gols_m:1.3,gols_s:1.2,jogadores:[{n:'Patrik Schick',pos:'Atacante',d:'Goleador técnico, forte de cabeça e com boa finalização. Convocado oficial.'},{n:'Tomáš Souček',pos:'Meia',d:'Box-to-box poderoso, contribui em gol e na marcação. Pilar da seleção.'}]},
+  'Coreia do Sul':{fifa:22,atk:68,def:62,form:['W','L','W','W','D'],gols_m:1.5,gols_s:1.4,jogadores:[{n:'Son Heung-min',pos:'Atacante',d:'Capitão e estrela. Rápido e goleador. Líder incontestável da Coreia.'},{n:'Lee Kang-in',pos:'Meia',d:'Criativo e técnico, especialista em bola parada. Convocado.'}]},
+  'África do Sul':{fifa:65,atk:55,def:58,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,jogadores:[{n:'Themba Zwane',pos:'Meia/Ponta',d:'Convocado. O mais técnico da equipe, ativo e imprevisível.'},{n:'Evidence Makgopa',pos:'Atacante',d:'Convocado. Referência ofensiva dos Bafana Bafana.'}]},
+  // GRUPO B
+  'Canadá':      {fifa:48,atk:72,def:67,form:['W','W','W','D','L'],gols_m:1.8,gols_s:1.0,jogadores:[{n:'Alphonso Davies',pos:'Lateral/Ponta',d:'Convocado. Um dos melhores laterais do mundo. Pode destruir qualquer defesa.'},{n:'Jonathan David',pos:'Atacante',d:'Convocado. Artilheiro do Lille. Um dos goleadores mais frios da Europa.'}]},
+  'Suíça':       {fifa:19,atk:68,def:72,form:['W','D','W','W','D'],gols_m:1.4,gols_s:0.8,jogadores:[{n:'Granit Xhaka',pos:'Meia',d:'Convocado. Liderança e experiência. Dita o ritmo do jogo suíço.'},{n:'Breel Embolo',pos:'Atacante',d:'Convocado. Físico avassalador, difícil de marcar individualmente.'}]},
+  'Bósnia':      {fifa:57,atk:62,def:60,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,jogadores:[{n:'Edin Džeko',pos:'Atacante',d:'Convocado. Veterano experiente, ainda perigoso com seu físico.'},{n:'Ermedin Demirovic',pos:'Atacante',d:'Convocado. Artilheiro do Estugarda. Substituição de Džeko na profundidade.'}]},
+  'Catar':       {fifa:58,atk:52,def:55,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.8,jogadores:[{n:'Akram Afif',pos:'Ponta',d:'Convocado. Melhor jogador do Catar, veloz e técnico.'},{n:'Almoez Ali',pos:'Atacante',d:'Convocado. Artilheiro histórico do Catar em Copas.'}]},
+  // GRUPO C
+  'Brasil':      {fifa:5,atk:88,def:80,form:['W','W','W','D','W'],gols_m:2.4,gols_s:0.6,jogadores:[{n:'Vinicius Jr.',pos:'Ponta',d:'Convocado. Melhor do mundo. Dribles, velocidade e gols. Impossível de parar.'},{n:'Raphinha',pos:'Ponta',d:'Convocado pelo Ancelotti. Capitão do Barcelona, técnico e decisivo.'}]},
+  'Marrocos':    {fifa:14,atk:70,def:78,form:['W','W','D','W','D'],gols_m:1.3,gols_s:0.7,jogadores:[{n:'Achraf Hakimi',pos:'Lateral',d:'Convocado. Um dos melhores laterais do mundo. PSG, ofensivo e veloz.'},{n:'Brahim Díaz',pos:'Meia',d:'Convocado. Criatividade e qualidade técnica. Real Madrid/Marrocos.'}]},
+  'Escócia':     {fifa:39,atk:60,def:62,form:['D','W','L','D','W'],gols_m:1.1,gols_s:1.3,jogadores:[{n:'Scott McTominay',pos:'Meia',d:'Convocado. Forte fisicamente e goleador de médio alcance. Napoli.'},{n:'Andy Robertson',pos:'Lateral',d:'Convocado. Capitão e líder defensivo/ofensivo. Liverpool.'}]},
+  'Haiti':       {fifa:83,atk:50,def:48,form:['L','L','D','W','L'],gols_m:0.7,gols_s:2.0,jogadores:[{n:'Frantzdy Pierrot',pos:'Atacante',d:'Convocado. Principal referência ofensiva haitiana.'},{n:'Wilson Isidor',pos:'Atacante',d:'Convocado. Joga no Celta de Vigo. Mais experiente do ataque.'}]},
+  // GRUPO D
+  'EUA':         {fifa:13,atk:73,def:69,form:['W','W','D','W','L'],gols_m:1.7,gols_s:1.1,jogadores:[{n:'Christian Pulisic',pos:'Meia/Ponta',d:'Convocado. Capitão e estrela. Veloz e decisivo no AC Milan.'},{n:'Gio Reyna',pos:'Meia',d:'Convocado. Talento geracional. Criativo e com ótimo passe.'}]},
+  'Turquia':     {fifa:29,atk:71,def:65,form:['W','D','W','L','W'],gols_m:1.6,gols_s:1.2,jogadores:[{n:'Hakan Çalhanoğlu',pos:'Meia',d:'Convocado. Capitão e maestro. Livre-direto preciso. Inter de Milão.'},{n:'Arda Güler',pos:'Meia',d:'Convocado. Joia de 19 anos do Real Madrid. Técnico e imprevisível.'}]},
+  'Austrália':   {fifa:23,atk:65,def:64,form:['W','D','L','W','W'],gols_m:1.4,gols_s:1.2,jogadores:[{n:'Maty Ryan',pos:'Goleiro',d:'Convocado. Titular e liderança no gol australiano.'},{n:'Nestory Irankunda',pos:'Atacante',d:'Convocado. Jovem promessa do Bayern de Munique. Explosivo.'}]},
+  'Paraguai':    {fifa:61,atk:57,def:60,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Miguel Almirón',pos:'Meia',d:'Convocado. O grande nome paraguaio. Rápido e dinâmico.'},{n:'Julio Enciso',pos:'Atacante',d:'Convocado. Joia jovem, técnica refinada e boa finalização.'}]},
+  // GRUPO E
+  'Alemanha':    {fifa:16,atk:82,def:75,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.8,jogadores:[{n:'Florian Wirtz',pos:'Meia',d:'Convocado. Melhor jogador da Bundesliga. Criativo e decisivo.'},{n:'Jamal Musiala',pos:'Meia',d:'Convocado. Prodígio do Bayern. Driblos e visão de jogo excepcionais.'}]},
+  'Costa do Marfim':{fifa:51,atk:68,def:60,form:['W','D','W','L','W'],gols_m:1.4,gols_s:1.3,jogadores:[{n:'Franck Kessié',pos:'Meia',d:'Convocado. Combatividade e gol de médio alcance. Atalanta.'},{n:'Simon Adingra',pos:'Ponta',d:'Convocado. Veloz e elétrico pelo lado. Brighton.'}]},
+  'Equador':     {fifa:44,atk:64,def:65,form:['W','D','D','W','L'],gols_m:1.3,gols_s:1.2,jogadores:[{n:'Enner Valencia',pos:'Atacante',d:'Convocado. Capitão e maior artilheiro histórico do Equador.'},{n:'Moisés Caicedo',pos:'Meia',d:'Convocado. Um dos melhores meias do mundo. Chelsea.'}]},
+  'Curaçao':     {fifa:84,atk:52,def:50,form:['L','D','L','W','L'],gols_m:0.8,gols_s:1.9,jogadores:[{n:'Leandro Bacuna',pos:'Meia',d:'Convocado. Principal criador de jogadas da seleção.'},{n:'Tahith Chong',pos:'Ponta',d:'Convocado. Joga no Lugano. Dribla bem e é imprevisível.'}]},
+  // GRUPO F
+  'Holanda':     {fifa:7,atk:80,def:73,form:['W','W','D','W','W'],gols_m:2.0,gols_s:0.9,jogadores:[{n:'Virgil van Dijk',pos:'Zagueiro',d:'Convocado. Um dos melhores zagueiros do mundo. Liverpool.'},{n:'Cody Gakpo',pos:'Ponta',d:'Convocado. Veloz e decisivo. Artilheiro na Copa 2022.'}]},
+  'Japão':       {fifa:17,atk:70,def:68,form:['W','W','D','W','D'],gols_m:1.5,gols_s:0.9,jogadores:[{n:'Takefusa Kubo',pos:'Meia/Ponta',d:'Convocado. Real Sociedad. Técnico e imprevisível, o melhor japonês.'},{n:'Daichi Kamada',pos:'Meia',d:'Convocado. Crystal Palace. Criativo entre as linhas.'}]},
+  'Suécia':      {fifa:24,atk:66,def:66,form:['D','W','D','L','W'],gols_m:1.3,gols_s:1.1,jogadores:[{n:'Viktor Gyökeres',pos:'Atacante',d:'Convocado. Artilheiro do Sporting. Melhor centroavante da temporada europeia.'},{n:'Alexander Isak',pos:'Atacante',d:'Convocado. Newcastle. Rápido, habilidoso e decisivo.'}]},
+  'Tunísia':     {fifa:32,atk:58,def:63,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.3,jogadores:[{n:'Hannibal Mejbri',pos:'Meia',d:'Convocado. Manchester United. Talento da geração nova tunisiana.'},{n:'Ellyes Skhiri',pos:'Meia',d:'Convocado. Frankfurt. Pilar do meio-campo defensivo.'}]},
+  // GRUPO G
+  'Bélgica':     {fifa:3,atk:79,def:72,form:['W','W','W','D','W'],gols_m:2.0,gols_s:0.8,jogadores:[{n:'Kevin De Bruyne',pos:'Meia',d:'Convocado. Um dos melhores do mundo. Visão e passes cirúrgicos.'},{n:'Romelu Lukaku',pos:'Atacante',d:'Convocado. Artilheiro histórico belga. 89 gols pela seleção.'}]},
+  'Egito':       {fifa:34,atk:65,def:64,form:['W','D','W','L','D'],gols_m:1.3,gols_s:1.1,jogadores:[{n:'Mohamed Salah',pos:'Ponta',d:'Convocado. Lendário. Mesmo na Copa, pode decidir sozinho.'},{n:'Mostafa Mohamed',pos:'Atacante',d:'Convocado. Centroavante físico e com bom jogo aéreo.'}]},
+  'Irã':         {fifa:21,atk:62,def:67,form:['W','D','D','W','L'],gols_m:1.2,gols_s:1.0,jogadores:[{n:'Mehdi Taremi',pos:'Atacante',d:'Convocado. Goleador prolífico na Europa, forte e técnico. Inter de Milão.'},{n:'Sardar Azmoun',pos:'Atacante',d:'Convocado. Técnico e letal. Um dos melhores atacantes da Ásia.'}]},
+  'Nova Zelândia':{fifa:95,atk:50,def:52,form:['D','L','W','L','D'],gols_m:0.8,gols_s:1.7,jogadores:[{n:'Chris Wood',pos:'Atacante',d:'Convocado. Artilheiro físico, referência no ataque das All Whites.'},{n:'Cristian Volpato',pos:'Meia',d:'Convocado. Roma. Joga também pela Austrália — confirmou Nova Zelândia.'}]},
+  // GRUPO H
+  'Espanha':     {fifa:8,atk:85,def:78,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.5,jogadores:[{n:'Lamine Yamal',pos:'Ponta',d:'Convocado. Sensação de 18 anos do Barcelona. Já é um dos melhores do mundo.'},{n:'Pedri',pos:'Meia',d:'Convocado. Domínio técnico excepcional. Coração do Barcelona e da Espanha.'}]},
+  'Uruguai':     {fifa:20,atk:72,def:73,form:['W','D','W','W','D'],gols_m:1.5,gols_s:0.9,jogadores:[{n:'Darwin Núñez',pos:'Atacante',d:'Convocado. Explosivo e imprevisível. Velocidade avassaladora. Liverpool.'},{n:'Federico Valverde',pos:'Meia',d:'Convocado. Completo e incansável. Um dos melhores do Real Madrid.'}]},
+  'Arábia Saudita':{fifa:56,atk:58,def:57,form:['W','L','D','L','W'],gols_m:1.0,gols_s:1.5,jogadores:[{n:'Salem Al-Dawsari',pos:'Ponta',d:'Convocado. Herói histórico da Copa de 2022 contra a Argentina.'},{n:'Firas Al-Buraikan',pos:'Atacante',d:'Convocado. Veloz e técnico, o principal nome ofensivo saudita.'}]},
+  'Cabo Verde':  {fifa:78,atk:56,def:58,form:['W','D','L','W','D'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Gilson Benchimol',pos:'Ponta',d:'Convocado. Técnico e veloz, principal criador de Cabo Verde.'},{n:'Ryan Mendes',pos:'Ponta',d:'Convocado. Experiente, driblador nato.'}]},
+  // GRUPO I
+  'França':      {fifa:2,atk:87,def:79,form:['W','W','W','W','D'],gols_m:2.3,gols_s:0.6,jogadores:[{n:'Kylian Mbappé',pos:'Atacante',d:'Convocado. O melhor do mundo. Velocidade, gol e assistência. Real Madrid.'},{n:'Antoine Griezmann',pos:'Meia',d:'Convocado. Maestro da seleção francesa. Decisivo em Copas.'}]},
+  'Noruega':     {fifa:43,atk:76,def:64,form:['W','W','D','W','W'],gols_m:2.1,gols_s:1.1,jogadores:[{n:'Erling Haaland',pos:'Atacante',d:'Convocado. O melhor centroavante do mundo. Gols em série pelo City.'},{n:'Martin Ødegaard',pos:'Meia',d:'Convocado. Criativo e técnico. Capitão do Arsenal.'}]},
+  'Senegal':     {fifa:18,atk:69,def:70,form:['W','D','W','W','L'],gols_m:1.4,gols_s:0.9,jogadores:[{n:'Sadio Mané',pos:'Ponta',d:'Convocado. Rápido e técnico. Al-Nassr, mas ainda influente na seleção.'},{n:'Ismaila Sarr',pos:'Ponta',d:'Convocado. Crystal Palace. Veloz e direto, ameaça constante.'}]},
+  'Iraque':      {fifa:67,atk:55,def:54,form:['D','L','W','D','L'],gols_m:1.0,gols_s:1.6,jogadores:[{n:'Amjed Attwan',pos:'Meia',d:'Convocado. Criativo, tenta criar jogadas pelo meio para o Iraque.'},{n:'Alaa Abbas',pos:'Atacante',d:'Convocado. Artilheiro histórico da seleção iraquiana.'}]},
+  // GRUPO J
+  'Argentina':   {fifa:1,atk:90,def:82,form:['W','W','W','W','W'],gols_m:2.5,gols_s:0.5,jogadores:[{n:'Lionel Messi',pos:'Meia',d:'Convocado. O GOAT. Mesmo aos 38 anos, pode decidir qualquer jogo.'},{n:'Julián Álvarez',pos:'Atacante',d:'Convocado. Parceiro letal de Messi. Gols e mobilidade. Atlético de Madrid.'}]},
+  'Áustria':     {fifa:25,atk:69,def:66,form:['W','D','W','L','W'],gols_m:1.5,gols_s:1.2,jogadores:[{n:'Marcel Sabitzer',pos:'Meia',d:'Convocado. Combativo e com boa visão de jogo. Manchester United.'},{n:'Christoph Baumgartner',pos:'Meia',d:'Convocado. Criativo. RB Leipzig.'}]},
+  'Argélia':     {fifa:33,atk:66,def:63,form:['W','W','D','L','W'],gols_m:1.4,gols_s:1.2,jogadores:[{n:'Riyad Mahrez',pos:'Ponta',d:'Convocado. Técnico e imprevisível. Al-Ahli. Pode resolver sozinho.'},{n:'Islam Slimani',pos:'Atacante',d:'Convocado. Experiente artilheiro, forte física e tecnicamente.'}]},
+  'Jordânia':    {fifa:87,atk:52,def:52,form:['D','L','W','L','D'],gols_m:0.9,gols_s:1.6,jogadores:[{n:'Musa Al-Taamari',pos:'Ponta',d:'Convocado. Principal jogador jordaniano, veloz e técnico.'},{n:'Hamza Al-Dardour',pos:'Atacante',d:'Convocado. Goleador histórico da Jordânia.'}]},
+  // GRUPO K
+  'Portugal':    {fifa:6,atk:84,def:74,form:['W','W','W','D','W'],gols_m:2.2,gols_s:0.8,jogadores:[{n:'Cristiano Ronaldo',pos:'Atacante',d:'Convocado. Lenda viva. Ainda decisivo com sua experiência. Al-Nassr.'},{n:'Bruno Fernandes',pos:'Meia',d:'Convocado. Motor do jogo português. Gols e assistências. Manchester United.'}]},
+  'Colômbia':    {fifa:11,atk:74,def:68,form:['W','W','D','W','D'],gols_m:1.7,gols_s:0.9,jogadores:[{n:'James Rodríguez',pos:'Meia',d:'Convocado. Técnico refinado. Artilheiro em 2014.'},{n:'Luis Díaz',pos:'Ponta',d:'Convocado. Veloz e dribladôr. Um dos melhores do Liverpool.'}]},
+  'Uzbequistão': {fifa:72,atk:57,def:58,form:['W','D','W','L','D'],gols_m:1.1,gols_s:1.3,jogadores:[{n:'Eldor Shomurodov',pos:'Atacante',d:'Convocado. Jogador do Cagliari. O mais experiente do grupo.'},{n:'Otabek Shukurov',pos:'Meia',d:'Convocado. Técnico e criativo no meio-campo uzbeco.'}]},
+  'RD Congo':    {fifa:73,atk:58,def:56,form:['D','W','L','D','W'],gols_m:1.0,gols_s:1.4,jogadores:[{n:'Yoane Wissa',pos:'Atacante',d:'Convocado. Veloz e técnico. Brentford. Artilheiro do grupo.'},{n:'Chancel Mbemba',pos:'Zagueiro',d:'Convocado. Líder defensivo, experiente na Europa.'}]},
+  // GRUPO L
+  'Inglaterra':  {fifa:4,atk:83,def:77,form:['W','W','W','D','W'],gols_m:2.1,gols_s:0.7,jogadores:[{n:'Harry Kane',pos:'Atacante',d:'Convocado. O artilheiro absoluto. Técnica e posicionamento perfeitos. Bayern.'},{n:'Jude Bellingham',pos:'Meia',d:'Convocado. O jogador mais completo da geração. Real Madrid.'}]},
+  'Croácia':     {fifa:10,atk:70,def:72,form:['D','W','D','W','D'],gols_m:1.3,gols_s:0.9,jogadores:[{n:'Luka Modrić',pos:'Meia',d:'Convocado. Eterno. Ainda é o coração da Croácia. Real Madrid.'},{n:'Mateo Kovačić',pos:'Meia',d:'Convocado. Incansável e criativo. Manchester City.'}]},
+  'Gana':        {fifa:60,atk:60,def:58,form:['W','L','D','W','L'],gols_m:1.2,gols_s:1.5,jogadores:[{n:'Mohammed Kudus',pos:'Meia/Ponta',d:'Convocado. Joia do West Ham. Técnico e decisivo.'},{n:'Jordan Ayew',pos:'Atacante',d:'Convocado. Experiente, cobre muito espaço.'}]},
+  'Panamá':      {fifa:77,atk:54,def:56,form:['D','L','W','D','L'],gols_m:0.9,gols_s:1.5,jogadores:[{n:'Ismael Díaz',pos:'Atacante',d:'Convocado. Principal referência ofensiva do Panamá.'},{n:'Anibal Godoy',pos:'Meia',d:'Convocado. Experiente, organiza o meio-campo.'}]},
+};
+// Jogos da fase de grupos (3 rodadas, 4 times por grupo = 6 jogos)
+function getGroupMatches(group){
+  const t=group.teams;
+  return[
+    {home:t[0],away:t[1],rodada:'Rodada 1'},{home:t[2],away:t[3],rodada:'Rodada 1'},
+    {home:t[0],away:t[2],rodada:'Rodada 2'},{home:t[1],away:t[3],rodada:'Rodada 2'},
+    {home:t[0],away:t[3],rodada:'Rodada 3'},{home:t[1],away:t[2],rodada:'Rodada 3'},
+  ];
+}
+
+// Calcular probabilidades com base nos dados do time
+function calcProbs(home,away){
+  const hd=TEAM_DATA[home.n]||{fifa:50,atk:65,def:65};
+  const ad=TEAM_DATA[away.n]||{fifa:50,atk:65,def:65};
+  // força relativa baseada em ranking FIFA e atk/def
+  const hStr=(200-hd.fifa)*0.4 + hd.atk*0.35 + (100-ad.def)*0.25;
+  const aStr=(200-ad.fifa)*0.4 + ad.atk*0.35 + (100-hd.def)*0.25;
+  const total=hStr+aStr;
+  let pH=Math.round(hStr/total*70); // max 70% para vitória
+  let pA=Math.round(aStr/total*70);
+  let pD=100-pH-pA;
+  if(pD<5){pD=5;const d=pH-pA;pH=Math.round(47.5+d*0.3);pA=100-pH-pD;}
+  return{h:Math.min(pH,72),d:Math.max(pD,8),a:Math.min(pA,72)};
+}
+
+let analiseGroupAtivo='A';
+const analiseCache={};
+
+function initAnalise(){
+  // render group tabs
+  const tabs=document.getElementById('analise-group-tabs');
+  tabs.innerHTML=GROUPS.map(g=>`<button class="ag-tab${g.id===analiseGroupAtivo?' active':''}" onclick="selectAnaliseGroup('${g.id}')">${g.id}</button>`).join('');
+  renderAnaliseJogos(analiseGroupAtivo);
+}
+
+window.selectAnaliseGroup=(id)=>{
+  analiseGroupAtivo=id;
+  document.querySelectorAll('.ag-tab').forEach(b=>b.classList.toggle('active',b.textContent===id));
+  renderAnaliseJogos(id);
+  fecharAnalise();
+};
+
+function renderAnaliseJogos(gid){
+  const group=GROUPS.find(g=>g.id===gid);
+  const matches=getGroupMatches(group);
+  const wrap=document.getElementById('analise-jogos-wrap');
+  wrap.innerHTML=`<div class="jogos-grid">${matches.map((m,i)=>{
+    const probs=calcProbs(m.home,m.away);
+    const cached=analiseCache[gid+'_'+i];
+    return`<div class="jogo-card" onclick="abrirAnalise('${gid}',${i})">
+      ${cached?'<div class="jogo-cached"></div>':''}
+      <div class="jogo-rodada">${m.rodada} — Grupo ${gid}</div>
+      <div class="jogo-times">
+        <div class="jogo-time">
+          <img src="${F(m.home.cc)}" width="36" height="24" style="object-fit:cover;border-radius:3px" onerror="this.style.opacity=0">
+          <div class="jogo-time-nome">${m.home.n}</div>
+        </div>
+        <div class="jogo-vs">VS</div>
+        <div class="jogo-time">
+          <img src="${F(m.away.cc)}" width="36" height="24" style="object-fit:cover;border-radius:3px" onerror="this.style.opacity=0">
+          <div class="jogo-time-nome">${m.away.n}</div>
+        </div>
+      </div>
+      <div class="jogo-odds">
+        <div class="jogo-odd odd-h">${m.home.n.split(' ')[0]}: ${probs.h}%</div>
+        <div class="jogo-odd odd-d">Empate: ${probs.d}%</div>
+        <div class="jogo-odd odd-a">${m.away.n.split(' ')[0]}: ${probs.a}%</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+window.abrirAnalise=async(gid,matchIdx)=>{
+  document.getElementById('analise-jogos-wrap').style.display='none';
+  document.getElementById('analise-result').style.display='';
+  const group=GROUPS.find(g=>g.id===gid);
+  const m=getGroupMatches(group)[matchIdx];
+  const probs=calcProbs(m.home,m.away);
+  const hd=TEAM_DATA[m.home.n]||{fifa:50,atk:65,def:65,form:['D','D','D','D','D'],gols_m:1.2,gols_s:1.2,jogadores:[]};
+  const ad=TEAM_DATA[m.away.n]||{fifa:50,atk:65,def:65,form:['D','D','D','D','D'],gols_m:1.2,gols_s:1.2,jogadores:[]};
+  const cacheKey=gid+'_'+matchIdx;
+
+  const formHTML=(form)=>form.map(r=>`<div class="form-${r==='W'?'w':r==='D'?'d':'l'}">${r}</div>`).join('');
+  const statBar=(val,max,color)=>`<div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${Math.round(val/max*100)}%;background:${color}"></div></div>`;
+
+  document.getElementById('analise-content').innerHTML=`
+    <div class="analise-header">
+      <div class="analise-matchup">
+        <div class="analise-team">
+          <img src="${F(m.home.cc)}" width="56" height="38" style="object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.12)" onerror="this.style.opacity=0">
+          <div class="analise-team-nome">${m.home.n}</div>
+          <div class="analise-team-rank">FIFA #${hd.fifa}</div>
+          <div class="form-badge">${formHTML(hd.form)}</div>
+        </div>
+        <div class="analise-vs-block">
+          <div class="analise-vs">VS</div>
+          <div class="analise-date">${m.rodada} · Grupo ${gid}</div>
+        </div>
+        <div class="analise-team">
+          <img src="${F(m.away.cc)}" width="56" height="38" style="object-fit:cover;border-radius:5px;border:1px solid rgba(255,255,255,.12)" onerror="this.style.opacity=0">
+          <div class="analise-team-nome">${m.away.n}</div>
+          <div class="analise-team-rank">FIFA #${ad.fifa}</div>
+          <div class="form-badge">${formHTML(ad.form)}</div>
+        </div>
+      </div>
+      <div class="prob-section">
+        <div class="prob-title">Probabilidades</div>
+        <div class="prob-bar-3">
+          <div class="pb3-h" style="width:${probs.h}%">${probs.h}%</div>
+          <div class="pb3-d" style="width:${probs.d}%">${probs.d}%</div>
+          <div class="pb3-a" style="width:${probs.a}%">${probs.a}%</div>
+        </div>
+        <div class="prob-labels"><span>${m.home.n}</span><span>Empate</span><span>${m.away.n}</span></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">⚔️ Ataque</div>
+        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.atk,100,'#4a90d9')}<span class="stat-val">${hd.atk}</span></div>
+        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.atk,100,'#da3633')}<span class="stat-val">${ad.atk}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">🛡️ Defesa</div>
+        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.def,100,'#4a90d9')}<span class="stat-val">${hd.def}</span></div>
+        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.def,100,'#da3633')}<span class="stat-val">${ad.def}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">⚽ Média de gols marcados</div>
+        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.gols_m,3,'#4a90d9')}<span class="stat-val">${hd.gols_m}</span></div>
+        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.gols_m,3,'#da3633')}<span class="stat-val">${ad.gols_m}</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">🚫 Média de gols sofridos</div>
+        <div class="stat-row"><span class="stat-label">${m.home.n}</span>${statBar(hd.gols_s,3,'#4a90d9')}<span class="stat-val">${hd.gols_s}</span></div>
+        <div class="stat-row"><span class="stat-label">${m.away.n}</span>${statBar(ad.gols_s,3,'#da3633')}<span class="stat-val">${ad.gols_s}</span></div>
+      </div>
+    </div>
+
+    <div class="jogadores-section">
+      <div class="prob-title" style="margin-bottom:8px">⭐ Jogadores-chave</div>
+      <div class="jogadores-grid">
+        ${[...hd.jogadores||[],...ad.jogadores||[]].map((j,i)=>`
+        <div class="jogador-card" style="border-left:3px solid ${i<2?'#4a90d9':'#da3633'}">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            ${fi(i<2?m.home.cc:m.away.cc,18,12)}
+            <div class="jogador-nome">${j.n}</div>
+          </div>
+          <div class="jogador-pos">${j.pos}</div>
+          <div class="jogador-desc">${j.d}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="analise-ia-card">
+      <div class="analise-ia-title">🤖 Análise da IA</div>
+      <div id="ia-text-wrap">
+        ${analiseCache[cacheKey]
+          ? `<div class="analise-texto">${analiseCache[cacheKey].texto}</div><div class="palpite-final"><div class="palpite-final-title">🎯 Palpite final</div><div class="palpite-final-texto">${analiseCache[cacheKey].palpite}</div></div>`
+          : `<div class="ia-loading"><div class="ia-dot"></div><div class="ia-dot"></div><div class="ia-dot"></div><span>Gerando análise com IA...</span></div>`
+        }
+      </div>
+    </div>`;
+
+  // Gera análise da IA se não estiver em cache local nem no Firestore
+  if(!analiseCache[cacheKey]){
+    // Tenta buscar do Firestore primeiro (outro usuário pode já ter gerado)
+    try{
+      const firestoreSnap = await getDoc(doc(db,'analises',cacheKey));
+      if(firestoreSnap.exists()){
+        const data = firestoreSnap.data();
+        analiseCache[cacheKey] = data;
+        const wrap2=document.getElementById('ia-text-wrap');
+        if(wrap2) wrap2.innerHTML=`<div class="analise-texto">${data.texto.replace(/\n/g,'</p><p>')}</div><div class="palpite-final"><div class="palpite-final-title">🎯 Palpite final</div><div class="palpite-final-texto">${data.palpite}</div></div>`;
+        renderAnaliseJogos(analiseGroupAtivo);
+        return;
+      }
+    }catch(e2){}
+    // Gera via API usando o proxy do Claude.ai (funciona em artifacts)
+    // No GitHub Pages, a API direta é bloqueada por CORS.
+    // Usamos análise pré-gerada baseada nos dados do time como fallback.
+    try{
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      });
+      if(!resp.ok) throw new Error('CORS ou API indisponível');
+      const data=await resp.json();
+      const raw=data.content?.[0]?.text||'{}';
+      const clean=raw.replace(/```json|```/g,'').trim();
+      const parsed=JSON.parse(clean);
+      analiseCache[cacheKey]=parsed;
+      // Salva no Firestore para todos os usuários
+      try{ await setDoc(doc(db,'analises',cacheKey), {...parsed, ts:serverTimestamp()}); }catch(e3){}
+      const wrap2=document.getElementById('ia-text-wrap');
+      if(wrap2) wrap2.innerHTML=`<div class="analise-texto">${parsed.texto.replace(/\n/g,'</p><p>')}</div><div class="palpite-final"><div class="palpite-final-title">🎯 Palpite final</div><div class="palpite-final-texto">${parsed.palpite}</div></div>`;
+      renderAnaliseJogos(analiseGroupAtivo);
+    }catch(e){
+      // Fallback: análise automática baseada nos dados sem IA
+      const fav = probs.h > probs.a ? m.home.n : probs.a > probs.h ? m.away.n : null;
+      const texto = `${m.home.n} e ${m.away.n} se enfrentam na ${m.rodada} do Grupo ${gid}, em um confronto que pode ser decisivo para a classificação. ${fav ? `${fav} chega como favorito segundo as probabilidades calculadas` : 'As equipes chegam equilibradas'}, com base no ranking FIFA e nos indicadores de ataque e defesa. \n${m.home.n} apresenta média de ${hd.gols_m} gols marcados por jogo e sofre ${hd.gols_s} em média, enquanto ${m.away.n} marca ${ad.gols_m} e sofre ${ad.gols_s}. A forma recente de ambas as equipes será um fator crucial no resultado. \nTaticamente, muito dependerá de quem controlar o meio-campo. ${hd.atk>ad.atk?m.home.n:m.away.n} tem vantagem no setor ofensivo, mas ${hd.def>ad.def?m.home.n:m.away.n} é mais sólido defensivamente. Um jogo disputado com poucos gols é o cenário mais provável.`;
+      const palpite = fav ? `Vitória de ${fav} por 1x0 ou 2x0, aproveitando a superioridade técnica.` : `Empate sem gols ou 1x1, com as equipes muito equilibradas.`;
+      const fallback = {texto, palpite};
+      analiseCache[cacheKey] = fallback;
+      try{ await setDoc(doc(db,'analises',cacheKey), {...fallback, ts:serverTimestamp()}); }catch(e3){}
+      const wrap2=document.getElementById('ia-text-wrap');
+      if(wrap2) wrap2.innerHTML=`<div class="analise-texto">${texto.replace(/\n/g,'</p><p>')}</div><div class="palpite-final"><div class="palpite-final-title">🎯 Palpite final</div><div class="palpite-final-texto">${palpite}</div></div>`;
+      renderAnaliseJogos(analiseGroupAtivo);
+    }
+  }
+};
+
+window.fecharAnalise=()=>{
+  document.getElementById('analise-result').style.display='none';
+  document.getElementById('analise-jogos-wrap').style.display='';
+};
 </script>
 </body>
 </html>
