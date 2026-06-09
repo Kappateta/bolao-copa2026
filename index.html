@@ -94,29 +94,22 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 .b2{border-color:rgba(74,144,217,.3);color:rgba(74,144,217,.4)}.b2:hover,.b2.on{background:rgba(74,144,217,.2);border-color:var(--silver);color:var(--silver)}
 .b3{border-color:rgba(192,106,26,.3);color:rgba(192,106,26,.4)}.b3:hover,.b3.on{background:rgba(192,106,26,.2);border-color:var(--bronze);color:var(--bronze)}
 .b3.locked{opacity:.25;cursor:not-allowed;pointer-events:none}
-/* BRACKET */
-.bracket-scroll{overflow-x:auto;padding-bottom:6px}
-.bracket{display:flex;min-width:920px}
-.rnd{display:flex;flex-direction:column;flex:1}
-.rh{text-align:center;padding:0 3px 8px}
-.rt{font-size:11px;font-weight:700;color:var(--gold)}.rc{font-size:8px;color:var(--text3);margin-top:1px}
-.rm{display:flex;flex-direction:column;flex:1;justify-content:space-around}
-.ms{padding:2px 2px}
-.mc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.mlb{font-size:7px;color:var(--text3);text-align:center;padding:1px 3px;background:var(--bg3);border-bottom:1px solid var(--border)}
-.mt{display:flex;align-items:center;gap:3px;padding:4px 6px;cursor:pointer;transition:background .1s;min-height:24px}
-.mt:hover:not(.na){background:var(--bg3)}.mt.win{background:rgba(212,160,23,.1)}.mt.win .mn{color:var(--gold);font-weight:600}
-.mt .ck{display:none;margin-left:auto;color:var(--gold);font-size:9px}.mt.win .ck{display:inline}
-.mdv{height:1px;background:var(--border)}
-.mf{width:20px;flex-shrink:0;display:flex;align-items:center}
-.mf img{width:18px;height:12px;object-fit:cover;border-radius:2px}
-.mn{flex:1;font-size:10px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:72px}
-.tbd{color:var(--text3);font-style:italic;font-size:9px}
-.na{cursor:default}
-.champ-box{text-align:center;margin:1rem auto;max-width:200px}
-.champ-f{width:44px;height:30px;object-fit:cover;border-radius:4px;border:1px solid rgba(255,255,255,.12);margin-bottom:5px}
-.champ-l{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
-.champ-n{font-size:17px;font-weight:700;color:var(--text)}
+/* BRACKET VISUAL */
+.vbracket-wrap{overflow-x:auto;overflow-y:hidden;padding:8px 0 12px}
+.vbracket-svg{display:block;min-width:900px}
+.vb-team{cursor:pointer}
+.vb-team circle{transition:all .18s}
+.vb-team:hover circle.flag-ring{stroke:#d4a017;stroke-width:2.5}
+.vb-team.winner circle.flag-ring{stroke:#d4a017;stroke-width:2.5;filter:drop-shadow(0 0 4px rgba(212,160,23,.5))}
+.vb-team.tbd circle.flag-ring{stroke:#3d444d;stroke-width:1.5;opacity:.5}
+.vb-team.winner .vb-name{fill:#d4a017;font-weight:700}
+.vb-team.tbd .vb-name{fill:#3d444d}
+.vb-name{font-size:9px;fill:#7d8590;font-family:'Outfit',sans-serif}
+.vb-connector{stroke:#2d333b;stroke-width:1.5;fill:none}
+.vb-connector.active{stroke:#484f58}
+.champ-circle{filter:drop-shadow(0 0 8px rgba(212,160,23,.4))}
+.vb-round-label{font-size:10px;font-weight:700;fill:#d4a017;font-family:'Outfit',sans-serif;text-anchor:middle}
+.vb-round-sub{font-size:8px;fill:#3d444d;font-family:'Outfit',sans-serif;text-anchor:middle}
 /* ARTILHEIRO */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px}
 .pc{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 7px;text-align:center;cursor:pointer;transition:all .15s;position:relative}
@@ -330,7 +323,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
         </div>
         <div id="step-bracket" style="display:none">
           <div class="bar"><button class="btn-sm" onclick="showStep('grupos')">← Grupos</button><button class="btn-go" onclick="showStep('artilheiro')">Próximo: Artilheiro →</button><button class="btn-sm" onclick="rebuildBracket()">↺</button></div>
-          <div class="bracket-scroll"><div class="bracket" id="bracket"></div></div>
+          <div class="vbracket-wrap"><div id="bracket"></div></div>
           <div id="champ-area"></div>
         </div>
         <div id="step-artilheiro" style="display:none">
@@ -383,7 +376,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
         </div>
         <div class="card"><div class="card-title">🏆 Campeão e Artilheiro</div><div id="detail-summary"></div></div>
         <div class="card"><div class="card-title">📋 Chaveamento completo</div>
-          <div class="bracket-scroll"><div class="bracket" id="detail-bracket"></div></div>
+          <div class="vbracket-wrap"><div id="detail-bracket"></div></div>
           <div id="detail-champ-area"></div>
         </div>
       </div>
@@ -760,36 +753,254 @@ function prop(bs){
   bs.f[0].home=bs.sf[0].winner;bs.f[0].away=bs.sf[1].winner;if(!bs.f[0].home||!bs.f[0].away)bs.f[0].winner=null;
 }
 window.pickW=(rk,idx,side)=>{const m=bState[rk][idx],t=side==='h'?m.home:m.away;if(!t)return;m.winner=t;prop(bState);renderBracketTo('bracket','champ-area',bState,true);};
+function renderBracketTo(bracketId, champId, bs, interactive) {
+  const el = document.getElementById(bracketId);
+  if(!el) return;
 
-function mHtml(rk,idx,bs,interactive,prefix){
-  const m=bs[rk][idx];
-  const hW=m.winner&&m.home&&m.winner.n===m.home.n,aW=m.winner&&m.away&&m.winner.n===m.away.n;
-  const can=m.home&&m.away&&interactive;
-  const fn=prefix?`pickWDetail('${rk}',${idx},'h')`:`pickW('${rk}',${idx},'h')`;
-  const fn2=prefix?`pickWDetail('${rk}',${idx},'a')`:`pickW('${rk}',${idx},'a')`;
-  const ht=m.home?`<div class="mf">${fi(m.home.cc)}</div><span class="mn">${m.home.n}</span>`:`<span class="tbd">?</span>`;
-  const at=m.away?`<div class="mf">${fi(m.away.cc)}</div><span class="mn">${m.away.n}</span>`:`<span class="tbd">?</span>`;
-  return`<div class="mc">${m.city?`<div class="mlb">${m.city}</div>`:''}
-    <div class="mt${hW?' win':''}${!can?' na':''}" ${can?`onclick="${fn}"`:''} >${ht}<span class="ck">✓</span></div>
-    <div class="mdv"></div>
-    <div class="mt${aW?' win':''}${!can?' na':''}" ${can?`onclick="${fn2}"`:''} >${at}<span class="ck">✓</span></div>
-  </div>`;
-}
+  // Layout constants
+  const W = 900, R = 16; // circle radius
+  const COL_X = [50, 175, 300, 425, 450, 475, 600, 725, 850]; // x positions: L32,L16,LQF,LSF, center, RSF,RQF,R16,R32
+  const LABEL_Y = 22;
 
-function renderBracketTo(bracketId,champId,bs,interactive,prefix){
-  const el=document.getElementById(bracketId);
-  const rounds=[{k:'r32',t:'32 Avos',c:'16'},{k:'r16',t:'Oitavas',c:'8'},{k:'qf',t:'Quartas',c:'4'},{k:'sf',t:'Semi',c:'2'},{k:'f',t:'Final',c:'1'}];
-  el.innerHTML='';
-  rounds.forEach(r=>{
-    const rd=document.createElement('div');rd.className='rnd';
-    rd.innerHTML=`<div class="rh"><div class="rt">${r.t}</div><div class="rc">${r.c} jogos</div></div>`;
-    const rm=document.createElement('div');rm.className='rm';
-    bs[r.k].forEach((_,i)=>{const s=document.createElement('div');s.className='ms';s.innerHTML=mHtml(r.k,i,bs,interactive,prefix);rm.appendChild(s);});
-    rd.appendChild(rm);el.appendChild(rd);
+  // Build the 32 teams in order: left side top-to-bottom, right side top-to-bottom
+  // Left side: matches 0-7 of r32 (indices 0..7), right side: 8-15
+  // Each match has home (top) and away (bottom)
+  // Vertical spacing
+  const TOTAL_H = 820;
+  const TEAMS_PER_SIDE = 16;
+  const SLOT_H = (TOTAL_H - 40) / TEAMS_PER_SIDE; // ~49px per team
+
+  function teamY(slotIdx) { return 40 + slotIdx * SLOT_H + SLOT_H/2; }
+
+  // Left side r32 order (matches 0..7): each match occupies 2 consecutive slots
+  // match 0 → slots 0,1; match 1 → slots 2,3; ... match 7 → slots 14,15
+  // Right side r32 (matches 8..15): same pattern
+
+  function getTeam(rk, matchIdx, side, bs) {
+    const m = bs[rk]?.[matchIdx];
+    if(!m) return null;
+    return side === 'h' ? m.home : m.away;
+  }
+
+  function isWinner(rk, matchIdx, side, bs) {
+    const m = bs[rk]?.[matchIdx];
+    if(!m || !m.winner) return false;
+    const t = side === 'h' ? m.home : m.away;
+    return t && m.winner.n === t.n;
+  }
+
+  // R16P pairings: which r32 matches feed into each r16 match
+  // R16P = [[0,3],[1,2],[4,5],[6,7],[8,9],[10,11],[12,15],[13,14]]
+  // Left r16: matches 0..3 (from r32 pairs [0,3],[1,2],[4,5],[6,7])
+  // Right r16: matches 4..7 (from r32 pairs [8,9],[10,11],[12,15],[13,14])
+
+  let svgParts = [];
+
+  // Draw round labels
+  const leftRounds  = [{x:COL_X[0],t:'32 Avos'},{x:COL_X[1],t:'Oitavas'},{x:COL_X[2],t:'Quartas'},{x:COL_X[3],t:'Semi'}];
+  const rightRounds = [{x:COL_X[8],t:'32 Avos'},{x:COL_X[7],t:'Oitavas'},{x:COL_X[6],t:'Quartas'},{x:COL_X[5],t:'Semi'}];
+  [...leftRounds,...rightRounds].forEach(r=>{
+    svgParts.push(`<text class="vb-round-label" x="${r.x}" y="${LABEL_Y}">${r.t}</text>`);
   });
-  const ch=bs.f[0].winner;
-  document.getElementById(champId).innerHTML=ch?`<div class="champ-box"><div style="font-size:28px;margin-bottom:4px">🏆</div><img class="champ-f" src="${F(ch.cc)}" onerror="this.style.opacity=0"><div class="champ-l">Campeão</div><div class="champ-n">${ch.n}</div></div>`:'';
+  svgParts.push(`<text class="vb-round-label" x="${W/2}" y="${LABEL_Y}">Final</text>`);
+
+  // ── TEAM NODE ──
+  function teamNode(x, y, team, isWin, isTbd, rk, idx, side) {
+    if(!team && !isTbd) return '';
+    const cc = team?.cc || 'un';
+    const name = team ? (team.n.length > 10 ? team.n.slice(0,9)+'…' : team.n) : '?';
+    const cls = isWin ? 'winner' : isTbd ? 'tbd' : '';
+    const nameX = x < W/2 ? x + R + 4 : x - R - 4;
+    const nameAnchor = x < W/2 ? 'start' : 'end';
+    const clickAttr = (interactive && team) ? `onclick="vbPickW('${rk}',${idx},'${side}')" style="cursor:pointer"` : '';
+
+    return `<g class="vb-team ${cls}" ${clickAttr}>
+      <defs><clipPath id="cp-${rk}-${idx}-${side}"><circle cx="${x}" cy="${y}" r="${R-1}"/></clipPath></defs>
+      <circle class="flag-ring" cx="${x}" cy="${y}" r="${R}" fill="#21262d" stroke="#484f58" stroke-width="1.5"/>
+      ${team ? `<image href="${F(cc)}" x="${x-R+1}" y="${y-R+1}" width="${(R-1)*2}" height="${(R-1)*2}" clip-path="url(#cp-${rk}-${idx}-${side})" preserveAspectRatio="xMidYMid slice"/>` : `<text x="${x}" y="${y+3}" text-anchor="middle" font-size="10" fill="#3d444d">?</text>`}
+      <text class="vb-name" x="${nameX}" y="${y+3}" text-anchor="${nameAnchor}">${name}</text>
+    </g>`;
+  }
+
+  // ── CONNECTOR LINE ──
+  function connector(x1, y1, x2, y2, active) {
+    const mx = (x1+x2)/2;
+    return `<path class="vb-connector${active?' active':''}" d="M${x1},${y1} H${mx} V${y2} H${x2}"/>`;
+  }
+
+  // ── LEFT SIDE ──
+  // R32 left (matches 0-7)
+  const leftR32Y = []; // y positions of each r32 team on left
+  for(let i=0;i<8;i++){
+    const yH = teamY(i*2);
+    const yA = teamY(i*2+1);
+    leftR32Y.push({h:yH, a:yA, mid:(yH+yA)/2});
+    const tH = getTeam('r32',i,'h',bs), tA = getTeam('r32',i,'a',bs);
+    const wH = isWinner('r32',i,'h',bs), wA = isWinner('r32',i,'a',bs);
+    svgParts.push(teamNode(COL_X[0], yH, tH, wH, !tH, 'r32', i, 'h'));
+    svgParts.push(teamNode(COL_X[0], yA, tA, wA, !tA, 'r32', i, 'a'));
+    // vertical line between pair
+    if(tH||tA) svgParts.push(`<line x1="${COL_X[0]+R}" y1="${yH}" x2="${COL_X[0]+R}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+  }
+
+  // R16 left (matches 0-3, fed by r32 pairs [0,3],[1,2],[4,5],[6,7])
+  const leftPairs = [[0,3],[1,2],[4,5],[6,7]];
+  const leftR16Y = [];
+  leftPairs.forEach(([a,b], ri) => {
+    const yH = leftR32Y[a].mid;
+    const yA = leftR32Y[b].mid;
+    const mid = (yH+yA)/2;
+    leftR16Y.push({h:yH, a:yA, mid});
+    const tH = bs.r16[ri]?.home, tA = bs.r16[ri]?.away;
+    const wH = bs.r16[ri]?.winner && tH && bs.r16[ri].winner.n===tH.n;
+    const wA = bs.r16[ri]?.winner && tA && bs.r16[ri].winner.n===tA.n;
+    // connectors from r32
+    svgParts.push(connector(COL_X[0]+R, leftR32Y[a].mid, COL_X[1], yH, !!tH));
+    svgParts.push(connector(COL_X[0]+R, leftR32Y[b].mid, COL_X[1], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[1]}" y1="${yH}" x2="${COL_X[1]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[1], yH, tH, wH, !tH, 'r16', ri, 'h'));
+    svgParts.push(teamNode(COL_X[1], yA, tA, wA, !tA, 'r16', ri, 'a'));
+  });
+
+  // QF left (matches 0-1)
+  const leftQFY = [];
+  [[0,1],[2,3]].forEach(([a,b], qi) => {
+    const yH = leftR16Y[a].mid, yA = leftR16Y[b].mid, mid=(yH+yA)/2;
+    leftQFY.push({h:yH, a:yA, mid});
+    const tH = bs.qf[qi]?.home, tA = bs.qf[qi]?.away;
+    const wH = bs.qf[qi]?.winner&&tH&&bs.qf[qi].winner.n===tH.n;
+    const wA = bs.qf[qi]?.winner&&tA&&bs.qf[qi].winner.n===tA.n;
+    svgParts.push(connector(COL_X[1]+R, leftR16Y[a].mid, COL_X[2], yH, !!tH));
+    svgParts.push(connector(COL_X[1]+R, leftR16Y[b].mid, COL_X[2], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[2]}" y1="${yH}" x2="${COL_X[2]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[2], yH, tH, wH, !tH, 'qf', qi, 'h'));
+    svgParts.push(teamNode(COL_X[2], yA, tA, wA, !tA, 'qf', qi, 'a'));
+  });
+
+  // SF left (match 0)
+  {
+    const yH = leftQFY[0].mid, yA = leftQFY[1].mid;
+    const tH = bs.sf[0]?.home, tA = bs.sf[0]?.away;
+    const wH = bs.sf[0]?.winner&&tH&&bs.sf[0].winner.n===tH.n;
+    const wA = bs.sf[0]?.winner&&tA&&bs.sf[0].winner.n===tA.n;
+    svgParts.push(connector(COL_X[2]+R, leftQFY[0].mid, COL_X[3], yH, !!tH));
+    svgParts.push(connector(COL_X[2]+R, leftQFY[1].mid, COL_X[3], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[3]}" y1="${yH}" x2="${COL_X[3]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[3], yH, tH, wH, !tH, 'sf', 0, 'h'));
+    svgParts.push(teamNode(COL_X[3], yA, tA, wA, !tA, 'sf', 0, 'a'));
+  }
+
+  // ── RIGHT SIDE (mirror) ──
+  // R32 right (matches 8-15)
+  const rightR32Y = [];
+  for(let i=8;i<16;i++){
+    const ri = i-8;
+    const yH = teamY(ri*2);
+    const yA = teamY(ri*2+1);
+    rightR32Y.push({h:yH, a:yA, mid:(yH+yA)/2});
+    const tH = getTeam('r32',i,'h',bs), tA = getTeam('r32',i,'a',bs);
+    const wH = isWinner('r32',i,'h',bs), wA = isWinner('r32',i,'a',bs);
+    svgParts.push(teamNode(COL_X[8], yH, tH, wH, !tH, 'r32', i, 'h'));
+    svgParts.push(teamNode(COL_X[8], yA, tA, wA, !tA, 'r32', i, 'a'));
+    if(tH||tA) svgParts.push(`<line x1="${COL_X[8]-R}" y1="${yH}" x2="${COL_X[8]-R}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+  }
+
+  // R16 right (matches 4-7, fed by r32 pairs [8,9],[10,11],[12,15],[13,14])
+  const rightPairs = [[0,1],[2,3],[4,7],[5,6]]; // indices into rightR32Y
+  const rightR16Y = [];
+  rightPairs.forEach(([a,b], ri) => {
+    const r16idx = ri+4;
+    const yH = rightR32Y[a].mid, yA = rightR32Y[b].mid, mid=(yH+yA)/2;
+    rightR16Y.push({h:yH, a:yA, mid});
+    const tH = bs.r16[r16idx]?.home, tA = bs.r16[r16idx]?.away;
+    const wH = bs.r16[r16idx]?.winner&&tH&&bs.r16[r16idx].winner.n===tH.n;
+    const wA = bs.r16[r16idx]?.winner&&tA&&bs.r16[r16idx].winner.n===tA.n;
+    svgParts.push(connector(COL_X[8]-R, rightR32Y[a].mid, COL_X[7], yH, !!tH));
+    svgParts.push(connector(COL_X[8]-R, rightR32Y[b].mid, COL_X[7], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[7]}" y1="${yH}" x2="${COL_X[7]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[7], yH, tH, wH, !tH, 'r16', r16idx, 'h'));
+    svgParts.push(teamNode(COL_X[7], yA, tA, wA, !tA, 'r16', r16idx, 'a'));
+  });
+
+  // QF right (matches 2-3)
+  const rightQFY = [];
+  [[0,1],[2,3]].forEach(([a,b], qi) => {
+    const qfIdx = qi+2;
+    const yH = rightR16Y[a].mid, yA = rightR16Y[b].mid, mid=(yH+yA)/2;
+    rightQFY.push({h:yH, a:yA, mid});
+    const tH = bs.qf[qfIdx]?.home, tA = bs.qf[qfIdx]?.away;
+    const wH = bs.qf[qfIdx]?.winner&&tH&&bs.qf[qfIdx].winner.n===tH.n;
+    const wA = bs.qf[qfIdx]?.winner&&tA&&bs.qf[qfIdx].winner.n===tA.n;
+    svgParts.push(connector(COL_X[7]-R, rightR16Y[a].mid, COL_X[6], yH, !!tH));
+    svgParts.push(connector(COL_X[7]-R, rightR16Y[b].mid, COL_X[6], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[6]}" y1="${yH}" x2="${COL_X[6]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[6], yH, tH, wH, !tH, 'qf', qfIdx, 'h'));
+    svgParts.push(teamNode(COL_X[6], yA, tA, wA, !tA, 'qf', qfIdx, 'a'));
+  });
+
+  // SF right (match 1)
+  {
+    const yH = rightQFY[0].mid, yA = rightQFY[1].mid;
+    const tH = bs.sf[1]?.home, tA = bs.sf[1]?.away;
+    const wH = bs.sf[1]?.winner&&tH&&bs.sf[1].winner.n===tH.n;
+    const wA = bs.sf[1]?.winner&&tA&&bs.sf[1].winner.n===tA.n;
+    svgParts.push(connector(COL_X[6]-R, rightQFY[0].mid, COL_X[5], yH, !!tH));
+    svgParts.push(connector(COL_X[6]-R, rightQFY[1].mid, COL_X[5], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[5]}" y1="${yH}" x2="${COL_X[5]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[5], yH, tH, wH, !tH, 'sf', 1, 'h'));
+    svgParts.push(teamNode(COL_X[5], yA, tA, wA, !tA, 'sf', 1, 'a'));
+  }
+
+  // ── FINAL ──
+  const centerY = TOTAL_H/2;
+  const sfLY = (leftQFY[0].mid+leftQFY[1].mid)/2;
+  const sfRY = (rightQFY[0].mid+rightQFY[1].mid)/2;
+  const fH = bs.f[0]?.home, fA = bs.f[0]?.away;
+  const fWH = bs.f[0]?.winner&&fH&&bs.f[0].winner.n===fH.n;
+  const fWA = bs.f[0]?.winner&&fA&&bs.f[0].winner.n===fA.n;
+  svgParts.push(connector(COL_X[3]+R, sfLY, COL_X[4]-R, centerY, !!fH));
+  svgParts.push(connector(COL_X[5]-R, sfRY, COL_X[4]+R, centerY, !!fA));
+  // Trophy circle in center
+  svgParts.push(`<circle cx="${W/2}" cy="${centerY}" r="28" fill="#21262d" stroke="#d4a017" stroke-width="2" class="champ-circle"/>`);
+  if(bs.f[0]?.winner) {
+    const ch = bs.f[0].winner;
+    svgParts.push(`<defs><clipPath id="cp-champ"><circle cx="${W/2}" cy="${centerY}" r="27"/></clipPath></defs>`);
+    svgParts.push(`<image href="${F(ch.cc)}" x="${W/2-27}" y="${centerY-27}" width="54" height="54" clip-path="url(#cp-champ)" preserveAspectRatio="xMidYMid slice"/>`);
+    svgParts.push(`<text x="${W/2}" y="${centerY+42}" text-anchor="middle" font-size="9" fill="#d4a017" font-family="Outfit,sans-serif">${ch.n}</text>`);
+  } else {
+    svgParts.push(`<text x="${W/2}" y="${centerY+4}" text-anchor="middle" font-size="16">🏆</text>`);
+    if(interactive) svgParts.push(`<text x="${W/2}" y="${centerY+42}" text-anchor="middle" font-size="8" fill="#3d444d" font-family="Outfit,sans-serif">Clique nos vencedores</text>`);
+  }
+  // Final team nodes (left=home, right=away)
+  svgParts.push(teamNode(COL_X[4]-R*2-4, centerY, fH, fWH, !fH, 'f', 0, 'h'));
+  svgParts.push(teamNode(COL_X[4]+R*2+4, centerY, fA, fWA, !fA, 'f', 0, 'a'));
+
+  el.innerHTML = `<svg class="vbracket-svg" viewBox="0 0 ${W} ${TOTAL_H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:${W}px;height:auto">
+    ${svgParts.join('\n')}
+  </svg>`;
+
+  // Attach click handler
+  if(interactive) {
+    el.querySelectorAll('.vb-team[onclick]').forEach(g => {
+      const attr = g.getAttribute('onclick');
+      g.removeAttribute('onclick');
+      g.addEventListener('click', () => eval(attr));
+    });
+  }
+
+  // Champion area (below SVG)
+  const chEl = document.getElementById(champId);
+  if(chEl) chEl.innerHTML = '';
 }
+
+window.vbPickW = (rk, idx, side) => {
+  const m = bState[rk][idx];
+  const t = side==='h' ? m.home : m.away;
+  if(!t) return;
+  m.winner = t;
+  prop(bState);
+  renderBracketTo('bracket','champ-area',bState,true);
+};
 
 // ── ARTILHEIRO ──
 function renderArtilheiro(){
@@ -960,7 +1171,7 @@ window.verPalpite=(idx)=>{
     </div>`;
   // reconstruct bracket from winners map
   const bs=reconstructBracket(p.winners);
-  renderBracketTo('detail-bracket','detail-champ-area',bs,false,'detail');
+  renderBracketTo('detail-bracket','detail-champ-area',bs,false);
 };
 
 function reconstructBracket(winners){
