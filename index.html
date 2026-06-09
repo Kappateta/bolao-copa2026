@@ -318,7 +318,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDU4lmpeRPebvM-YTu5S1jmEEBVb2kwOcc",
@@ -751,7 +751,7 @@ window.loadPalpitesAdmin=async()=>{
   el.innerHTML='<div class="spinner-wrap"><span class="spinner"></span>Carregando...</div>';
   try{
     const snap=await getDocs(collection(db,'palpites'));
-    allPalpites=snap.docs.map(d=>d.data());
+    allPalpites=snap.docs.map(d=>({...d.data(), _docId: d.id}));
     document.getElementById('palpites-count').textContent=allPalpites.length+' palpite'+(allPalpites.length!==1?'s':'');
     document.getElementById('palpites-count').className='pill ok';
     if(allPalpites.length===0){el.innerHTML='<div style="color:var(--text2);font-size:13px;padding:.5rem">Nenhum palpite enviado ainda.</div>';return;}
@@ -759,20 +759,33 @@ window.loadPalpitesAdmin=async()=>{
       const cc=ALL_TEAMS.find(t=>t.n===p.campeao)?.cc||'un';
       const art=PLAYERS.find(pl=>pl.n===p.artilheiro);
       const ts=p.ts?.toDate?new Date(p.ts.toDate()).toLocaleString('pt-BR'):'-';
-      return`<div class="palpite-item" onclick="verPalpite(${i})">
-        <div>
+      return`<div class="palpite-item">
+        <div onclick="verPalpite(${i})" style="flex:1;cursor:pointer">
           <div class="pi-name">${p.nome}</div>
           <div class="pi-email">${p.email}</div>
           <div class="pi-ts">Enviado: ${ts}</div>
         </div>
-        <div class="pi-picks">
+        <div class="pi-picks" onclick="verPalpite(${i})" style="cursor:pointer">
           <div class="pi-champ">${fi(cc,18,12)}<span>${p.campeao}</span></div>
           ${art?`<div class="pi-champ">${fi(art.cc,16,11)}<span>${p.artilheiro}</span></div>`:''}
         </div>
-        <button class="btn-ver">Ver chaveamento →</button>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <button class="btn-ver" onclick="verPalpite(${i})">Ver →</button>
+          <button class="btn-ver" style="border-color:var(--red);color:var(--red)" onclick="deletePalpite(event,${i})">🗑</button>
+        </div>
       </div>`;
     }).join('');
   }catch(e){el.innerHTML='<div style="color:var(--red);font-size:12px">Erro: '+e.message+'</div>';}
+};
+
+window.deletePalpite=async(e,idx)=>{
+  e.stopPropagation();
+  const p=allPalpites[idx];
+  if(!confirm(`Excluir o palpite de "${p.nome}"? Essa ação não pode ser desfeita.`))return;
+  try{
+    await deleteDoc(doc(db,'palpites', p._docId));
+    await loadPalpitesAdmin();
+  }catch(e2){alert('Erro ao excluir: '+e2.message);}
 };
 
 window.verPalpite=(idx)=>{
