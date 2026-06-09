@@ -231,6 +231,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 .ia-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:iapulse .8s ease-in-out infinite}
 .ia-dot:nth-child(2){animation-delay:.15s}.ia-dot:nth-child(3){animation-delay:.3s}
 @keyframes iapulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.4);opacity:1}}
+.ld-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);animation:iapulse .9s ease-in-out infinite}
 .form-badge{display:inline-flex;gap:3px;margin-top:3px}
 .form-w{width:14px;height:14px;border-radius:3px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
 .form-d{width:14px;height:14px;border-radius:3px;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--text2)}
@@ -239,6 +240,17 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 </style>
 </head>
 <body>
+
+<!-- LOADING (mostrado enquanto Firebase verifica sessão) -->
+<div id="loading-screen" style="position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1.2rem">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.08em;color:var(--text)">Bolão <span style="color:var(--gold)">Copa 2026</span></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="ld-dot" style="animation-delay:0s"></div>
+    <div class="ld-dot" style="animation-delay:.18s"></div>
+    <div class="ld-dot" style="animation-delay:.36s"></div>
+  </div>
+  <div style="font-size:12px;color:var(--text3);letter-spacing:.06em">Carregando...</div>
+</div>
 
 <!-- AUTH -->
 <div class="auth-wrap" id="auth-screen">
@@ -516,26 +528,62 @@ window.doRegister=async()=>{
   try{const c=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(c.user,{displayName:name});}
   catch(e){msg.textContent=e.code==='auth/email-already-in-use'?'Email já cadastrado':e.message;msg.className='auth-msg err';btn.disabled=false;btn.textContent='Criar conta';}
 };
+// ── AUTH ──
+window.switchAuth=(mode)=>{
+  document.getElementById('login-form').style.display=mode==='login'?'':'none';
+  document.getElementById('register-form').style.display=mode==='register'?'':'none';
+  document.getElementById('tab-login').classList.toggle('active',mode==='login');
+  document.getElementById('tab-register').classList.toggle('active',mode==='register');
+};
+window.doLogin=async()=>{
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const btn=document.getElementById('btn-login'),msg=document.getElementById('login-msg');
+  if(!email||!pass){msg.textContent='Preencha email e senha';msg.className='auth-msg err';return;}
+  btn.disabled=true;btn.textContent='Entrando...';
+  try{await signInWithEmailAndPassword(auth,email,pass);}
+  catch(e){msg.textContent=e.code==='auth/invalid-credential'?'Email ou senha incorretos':e.message;msg.className='auth-msg err';btn.disabled=false;btn.textContent='Entrar';}
+};
+window.doRegister=async()=>{
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const btn=document.getElementById('btn-register'),msg=document.getElementById('register-msg');
+  if(!name){msg.textContent='Digite seu nome';msg.className='auth-msg err';return;}
+  if(!email||!pass){msg.textContent='Preencha email e senha';msg.className='auth-msg err';return;}
+  if(pass.length<6){msg.textContent='Senha precisa ter pelo menos 6 caracteres';msg.className='auth-msg err';return;}
+  btn.disabled=true;btn.textContent='Criando conta...';
+  try{const c=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(c.user,{displayName:name});}
+  catch(e){msg.textContent=e.code==='auth/email-already-in-use'?'Email já cadastrado':e.message;msg.className='auth-msg err';btn.disabled=false;btn.textContent='Criar conta';}
+};
 window.doLogout=async()=>{await signOut(auth);};
 
 onAuthStateChanged(auth,async(user)=>{
+  // Esconde tudo enquanto resolve o estado de auth
+  document.getElementById('loading-screen').style.display='flex';
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app-screen').classList.remove('visible');
+
   if(user){
     currentUser=user;
-    document.getElementById('auth-screen').style.display='none';
-    document.getElementById('app-screen').classList.add('visible');
     document.getElementById('user-display-name').textContent=user.displayName||user.email;
     if(user.email===ADMIN_EMAIL){
       document.getElementById('tb-admin').style.display='';
       document.getElementById('tb-palpites-admin').style.display='';
     }
     initGR();renderGroups();renderArtilheiro();
+    // Carrega palpite existente ANTES de mostrar qualquer coisa
     await checkExistingPalpite();
     showTab('palpite');
+    // Só agora remove o loading e mostra o app
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('app-screen').classList.add('visible');
   }else{
     currentUser=null;
-    document.getElementById('auth-screen').style.display='flex';
-    document.getElementById('app-screen').classList.remove('visible');
     if(rankingUnsub){rankingUnsub();rankingUnsub=null;}
+    // Só agora mostra a tela de login
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('auth-screen').style.display='flex';
   }
 });
 
