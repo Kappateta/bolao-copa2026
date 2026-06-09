@@ -420,7 +420,6 @@ const firebaseConfig = {
   appId: "1:8302805674:web:76efa98b3039e3a022c6d3"
 };
 
-const ADMIN_EMAIL = "carlosfiel2704@gmail.com";
 const DEADLINE = new Date('2026-06-11T15:00:00Z');
 function isPastDeadline(){ return new Date() >= DEADLINE; }
 function timeLeft(){
@@ -431,6 +430,17 @@ function timeLeft(){
 const fbApp=initializeApp(firebaseConfig);
 const auth=getAuth(fbApp);
 const db=getFirestore(fbApp);
+
+// Verifica se o usuário é admin consultando o Firestore
+// O documento /config/admin precisa ser criado manualmente por você no console
+async function checkIsAdmin(uid){
+  try{
+    const snap=await getDoc(doc(db,'config','admin'));
+    if(!snap.exists()) return false;
+    const admins=snap.data().uids||[];
+    return admins.includes(uid);
+  }catch(e){ return false; }
+}
 
 const F=cc=>`https://flagcdn.com/w40/${cc}.png`;
 const fi=(cc,w,h)=>`<img src="${F(cc)}" width="${w||18}" height="${h||12}" style="object-fit:cover;border-radius:2px;display:block" onerror="this.style.opacity=0">`;
@@ -451,16 +461,45 @@ const GROUPS=[
 ];
 const ALL_TEAMS=GROUPS.flatMap(g=>g.teams);
 const R32=[
-  {h:'2A',a:'2B',city:'Los Angeles'},{h:'1C',a:'2F',city:'Houston'},
-  {h:'1E',a:'3ABCDF',city:'Boston'},{h:'1I',a:'3CDFGH',city:'Nova York/NJ'},
-  {h:'1F',a:'2C',city:'Monterrey'},{h:'2E',a:'2I',city:'Dallas'},
-  {h:'1A',a:'3CEFHI',city:'Cidade do México'},{h:'1L',a:'3EHIJK',city:'Atlanta'},
-  {h:'1G',a:'3AEHIJ',city:'Seattle'},{h:'1D',a:'3BEFIJ',city:'SF Bay Area'},
-  {h:'1B',a:'3EFGIJ',city:'Vancouver'},{h:'1K',a:'3DEIJL',city:'Kansas City'},
-  {h:'1H',a:'2J',city:'Los Angeles'},{h:'2D',a:'2G',city:'Dallas'},
-  {h:'2K',a:'2L',city:'Toronto'},{h:'1J',a:'2H',city:'Miami'},
+  // Fonte: FIFA oficial / Fox Sports / WorldCupPass
+  // M73
+  {h:'2A', a:'2B',      city:'Los Angeles'},
+  // M74
+  {h:'1E', a:'3ABCDF',  city:'Boston'},
+  // M75
+  {h:'1F', a:'2C',      city:'Monterrey'},
+  // M76
+  {h:'1C', a:'2F',      city:'Houston'},
+  // M77
+  {h:'1I', a:'3CDFGH',  city:'Nova York/NJ'},
+  // M78
+  {h:'2E', a:'2I',      city:'Dallas'},
+  // M79
+  {h:'1A', a:'3CEFHI',  city:'Cidade do México'},
+  // M80
+  {h:'1L', a:'3EHIJK',  city:'Atlanta'},
+  // M81
+  {h:'1D', a:'3BEFIJ',  city:'SF Bay Area'},
+  // M82
+  {h:'1G', a:'3AEHIJ',  city:'Seattle'},
+  // M83
+  {h:'2K', a:'2L',      city:'Toronto'},
+  // M84
+  {h:'1H', a:'2J',      city:'Los Angeles'},
+  // M85
+  {h:'1B', a:'3EFGIJ',  city:'Vancouver'},
+  // M86
+  {h:'2D', a:'2G',      city:'Dallas'},
+  // M87
+  {h:'1K', a:'3DEIJL',  city:'Kansas City'},
+  // M88
+  {h:'1J', a:'2H',      city:'Miami'},
 ];
-const R16P=[[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]];
+// Pares das oitavas: quais jogos dos 32 avos se enfrentam
+// Fonte: FIFA oficial - bracket oficial publicado
+// M73(0) vs M76(3), M74(1) vs M75(2), M77(4) vs M78(5), M79(6) vs M80(7)
+// M81(8) vs M82(9), M83(10) vs M84(11), M85(12) vs M88(15), M86(13) vs M87(14)
+const R16P=[[0,3],[1,2],[4,5],[6,7],[8,9],[10,11],[12,15],[13,14]];
 const PLAYERS=[
   {n:'Kylian Mbappé',c:'França',cc:'fr',prob:'~14%'},
   {n:'Harry Kane',c:'Inglaterra',cc:'gb-eng',prob:'~12%'},
@@ -567,15 +606,17 @@ onAuthStateChanged(auth,async(user)=>{
   if(user){
     currentUser=user;
     document.getElementById('user-display-name').textContent=user.displayName||user.email;
-    if(user.email===ADMIN_EMAIL){
+    initGR();renderGroups();renderArtilheiro();
+    // Verifica admin e palpite em paralelo
+    const [isAdmin] = await Promise.all([
+      checkIsAdmin(user.uid),
+      checkExistingPalpite()
+    ]);
+    if(isAdmin){
       document.getElementById('tb-admin').style.display='';
       document.getElementById('tb-palpites-admin').style.display='';
     }
-    initGR();renderGroups();renderArtilheiro();
-    // Carrega palpite existente ANTES de mostrar qualquer coisa
-    await checkExistingPalpite();
     showTab('palpite');
-    // Só agora remove o loading e mostra o app
     document.getElementById('loading-screen').style.display='none';
     document.getElementById('app-screen').classList.add('visible');
   }else{
