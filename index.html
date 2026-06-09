@@ -789,12 +789,13 @@ function renderBracketTo(bracketId, champId, bs, interactive) {
     return t && m.winner.n === t.n;
   }
 
-  // R16P pairings: which r32 matches feed into each r16 match
-  // R16P = [[0,3],[1,2],[4,5],[6,7],[8,9],[10,11],[12,15],[13,14]]
-  // Left r16: matches 0..3 (from r32 pairs [0,3],[1,2],[4,5],[6,7])
-  // Right r16: matches 4..7 (from r32 pairs [8,9],[10,11],[12,15],[13,14])
-
-  let svgParts = [];
+  // R16P oficial = [[0,3],[1,2],[4,5],[6,7],[8,9],[10,11],[12,15],[13,14]]
+  // Left r16 matches 0-3:
+  //   r16[0]: r32[0] vs r32[3] → leftR32Y[0] vs leftR32Y[3]
+  //   r16[1]: r32[1] vs r32[2] → leftR32Y[1] vs leftR32Y[2]
+  //   r16[2]: r32[4] vs r32[5] → leftR32Y[4] vs leftR32Y[5]
+  //   r16[3]: r32[6] vs r32[7] → leftR32Y[6] vs leftR32Y[7]
+  const leftPairs = [[0,3],[1,2],[4,5],[6,7]];
 
   // Draw round labels
   const leftRounds  = [{x:COL_X[0],t:'32 Avos'},{x:COL_X[1],t:'Oitavas'},{x:COL_X[2],t:'Quartas'},{x:COL_X[3],t:'Semi'}];
@@ -843,26 +844,62 @@ function renderBracketTo(bracketId, champId, bs, interactive) {
     if(tH||tA) svgParts.push(`<line x1="${COL_X[0]+R}" y1="${yH}" x2="${COL_X[0]+R}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
   }
 
-  // R16 left (matches 0-3, fed by r32 pairs [0,3],[1,2],[4,5],[6,7])
-  const leftPairs = [[0,3],[1,2],[4,5],[6,7]];
-  const leftR16Y = [];
-  leftPairs.forEach(([a,b], ri) => {
-    const yH = leftR32Y[a].mid;
-    const yA = leftR32Y[b].mid;
-    const mid = (yH+yA)/2;
-    leftR16Y.push({h:yH, a:yA, mid});
-    const tH = bs.r16[ri]?.home, tA = bs.r16[ri]?.away;
-    const wH = bs.r16[ri]?.winner && tH && bs.r16[ri].winner.n===tH.n;
-    const wA = bs.r16[ri]?.winner && tA && bs.r16[ri].winner.n===tA.n;
-    // connectors from r32
-    svgParts.push(connector(COL_X[0]+R, leftR32Y[a].mid, COL_X[1], yH, !!tH));
-    svgParts.push(connector(COL_X[0]+R, leftR32Y[b].mid, COL_X[1], yA, !!tA));
-    svgParts.push(`<line x1="${COL_X[1]}" y1="${yH}" x2="${COL_X[1]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
-    svgParts.push(teamNode(COL_X[1], yH, tH, wH, !tH, 'r16', ri, 'h'));
-    svgParts.push(teamNode(COL_X[1], yA, tA, wA, !tA, 'r16', ri, 'a'));
+  // Right r16 (matches 4-7):
+  //   r16[4]: r32[8] vs r32[9]   → rightR32Y[0] vs rightR32Y[1]
+  //   r16[5]: r32[10] vs r32[11] → rightR32Y[2] vs rightR32Y[3]
+  //   r16[6]: r32[12] vs r32[15] → rightR32Y[4] vs rightR32Y[7]
+  //   r16[7]: r32[13] vs r32[14] → rightR32Y[5] vs rightR32Y[6]
+  const rightR16Render = [
+    {r32a:0,r32b:1,r16idx:4},
+    {r32a:2,r32b:3,r16idx:5},
+    {r32a:4,r32b:7,r16idx:6},
+    {r32a:5,r32b:6,r16idx:7},
+  ];
+  const rightR16Y = [];
+  rightR16Render.forEach(({r32a,r32b,r16idx}) => {
+    const yH = rightR32Y[r32a].mid, yA = rightR32Y[r32b].mid, mid=(yH+yA)/2;
+    rightR16Y.push({h:yH, a:yA, mid, idx:r16idx});
+    const tH = bs.r16[r16idx]?.home, tA = bs.r16[r16idx]?.away;
+    const wH = bs.r16[r16idx]?.winner&&tH&&bs.r16[r16idx].winner.n===tH.n;
+    const wA = bs.r16[r16idx]?.winner&&tA&&bs.r16[r16idx].winner.n===tA.n;
+    svgParts.push(connector(COL_X[8]-R, rightR32Y[r32a].mid, COL_X[7], yH, !!tH));
+    svgParts.push(connector(COL_X[8]-R, rightR32Y[r32b].mid, COL_X[7], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[7]}" y1="${yH}" x2="${COL_X[7]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[7], yH, tH, wH, !tH, 'r16', r16idx, 'h'));
+    svgParts.push(teamNode(COL_X[7], yA, tA, wA, !tA, 'r16', r16idx, 'a'));
   });
 
-  // QF left (matches 0-1)
+  // QF right (matches 2-3): r16[4] vs r16[5] → qf[2]; r16[6] vs r16[7] → qf[3]
+  const rightQFY = [];
+  [[0,1],[2,3]].forEach(([a,b], qi) => {
+    const qfIdx = qi+2;
+    const yH = rightR16Y[a].mid, yA = rightR16Y[b].mid, mid=(yH+yA)/2;
+    rightQFY.push({h:yH, a:yA, mid});
+    const tH = bs.qf[qfIdx]?.home, tA = bs.qf[qfIdx]?.away;
+    const wH = bs.qf[qfIdx]?.winner&&tH&&bs.qf[qfIdx].winner.n===tH.n;
+    const wA = bs.qf[qfIdx]?.winner&&tA&&bs.qf[qfIdx].winner.n===tA.n;
+    svgParts.push(connector(COL_X[7]-R, rightR16Y[a].mid, COL_X[6], yH, !!tH));
+    svgParts.push(connector(COL_X[7]-R, rightR16Y[b].mid, COL_X[6], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[6]}" y1="${yH}" x2="${COL_X[6]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[6], yH, tH, wH, !tH, 'qf', qfIdx, 'h'));
+    svgParts.push(teamNode(COL_X[6], yA, tA, wA, !tA, 'qf', qfIdx, 'a'));
+  });
+  leftR16Render.forEach(({r32a,r32b,r16idx}) => {
+    const yH = leftR32Y[r32a].mid;
+    const yA = leftR32Y[r32b].mid;
+    const mid = (yH+yA)/2;
+    leftR16Y.push({h:yH, a:yA, mid, idx:r16idx});
+    const tH = bs.r16[r16idx]?.home, tA = bs.r16[r16idx]?.away;
+    const wH = bs.r16[r16idx]?.winner && tH && bs.r16[r16idx].winner.n===tH.n;
+    const wA = bs.r16[r16idx]?.winner && tA && bs.r16[r16idx].winner.n===tA.n;
+    svgParts.push(connector(COL_X[0]+R, leftR32Y[r32a].mid, COL_X[1], yH, !!tH));
+    svgParts.push(connector(COL_X[0]+R, leftR32Y[r32b].mid, COL_X[1], yA, !!tA));
+    svgParts.push(`<line x1="${COL_X[1]}" y1="${yH}" x2="${COL_X[1]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
+    svgParts.push(teamNode(COL_X[1], yH, tH, wH, !tH, 'r16', r16idx, 'h'));
+    svgParts.push(teamNode(COL_X[1], yA, tA, wA, !tA, 'r16', r16idx, 'a'));
+  });
+
+  // QF left: r16[0] winner vs r16[1] winner → qf[0]; r16[2] vs r16[3] → qf[1]
   const leftQFY = [];
   [[0,1],[2,3]].forEach(([a,b], qi) => {
     const yH = leftR16Y[a].mid, yA = leftR16Y[b].mid, mid=(yH+yA)/2;
@@ -903,52 +940,6 @@ function renderBracketTo(bracketId, champId, bs, interactive) {
     svgParts.push(teamNode(COL_X[8], yH, tH, wH, !tH, 'r32', i, 'h'));
     svgParts.push(teamNode(COL_X[8], yA, tA, wA, !tA, 'r32', i, 'a'));
     if(tH||tA) svgParts.push(`<line x1="${COL_X[8]-R}" y1="${yH}" x2="${COL_X[8]-R}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
-  }
-
-  // R16 right (matches 4-7, fed by r32 pairs [8,9],[10,11],[12,15],[13,14])
-  const rightPairs = [[0,1],[2,3],[4,7],[5,6]]; // indices into rightR32Y
-  const rightR16Y = [];
-  rightPairs.forEach(([a,b], ri) => {
-    const r16idx = ri+4;
-    const yH = rightR32Y[a].mid, yA = rightR32Y[b].mid, mid=(yH+yA)/2;
-    rightR16Y.push({h:yH, a:yA, mid});
-    const tH = bs.r16[r16idx]?.home, tA = bs.r16[r16idx]?.away;
-    const wH = bs.r16[r16idx]?.winner&&tH&&bs.r16[r16idx].winner.n===tH.n;
-    const wA = bs.r16[r16idx]?.winner&&tA&&bs.r16[r16idx].winner.n===tA.n;
-    svgParts.push(connector(COL_X[8]-R, rightR32Y[a].mid, COL_X[7], yH, !!tH));
-    svgParts.push(connector(COL_X[8]-R, rightR32Y[b].mid, COL_X[7], yA, !!tA));
-    svgParts.push(`<line x1="${COL_X[7]}" y1="${yH}" x2="${COL_X[7]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
-    svgParts.push(teamNode(COL_X[7], yH, tH, wH, !tH, 'r16', r16idx, 'h'));
-    svgParts.push(teamNode(COL_X[7], yA, tA, wA, !tA, 'r16', r16idx, 'a'));
-  });
-
-  // QF right (matches 2-3)
-  const rightQFY = [];
-  [[0,1],[2,3]].forEach(([a,b], qi) => {
-    const qfIdx = qi+2;
-    const yH = rightR16Y[a].mid, yA = rightR16Y[b].mid, mid=(yH+yA)/2;
-    rightQFY.push({h:yH, a:yA, mid});
-    const tH = bs.qf[qfIdx]?.home, tA = bs.qf[qfIdx]?.away;
-    const wH = bs.qf[qfIdx]?.winner&&tH&&bs.qf[qfIdx].winner.n===tH.n;
-    const wA = bs.qf[qfIdx]?.winner&&tA&&bs.qf[qfIdx].winner.n===tA.n;
-    svgParts.push(connector(COL_X[7]-R, rightR16Y[a].mid, COL_X[6], yH, !!tH));
-    svgParts.push(connector(COL_X[7]-R, rightR16Y[b].mid, COL_X[6], yA, !!tA));
-    svgParts.push(`<line x1="${COL_X[6]}" y1="${yH}" x2="${COL_X[6]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
-    svgParts.push(teamNode(COL_X[6], yH, tH, wH, !tH, 'qf', qfIdx, 'h'));
-    svgParts.push(teamNode(COL_X[6], yA, tA, wA, !tA, 'qf', qfIdx, 'a'));
-  });
-
-  // SF right (match 1)
-  {
-    const yH = rightQFY[0].mid, yA = rightQFY[1].mid;
-    const tH = bs.sf[1]?.home, tA = bs.sf[1]?.away;
-    const wH = bs.sf[1]?.winner&&tH&&bs.sf[1].winner.n===tH.n;
-    const wA = bs.sf[1]?.winner&&tA&&bs.sf[1].winner.n===tA.n;
-    svgParts.push(connector(COL_X[6]-R, rightQFY[0].mid, COL_X[5], yH, !!tH));
-    svgParts.push(connector(COL_X[6]-R, rightQFY[1].mid, COL_X[5], yA, !!tA));
-    svgParts.push(`<line x1="${COL_X[5]}" y1="${yH}" x2="${COL_X[5]}" y2="${yA}" stroke="#2d333b" stroke-width="1.5"/>`);
-    svgParts.push(teamNode(COL_X[5], yH, tH, wH, !tH, 'sf', 1, 'h'));
-    svgParts.push(teamNode(COL_X[5], yA, tA, wA, !tA, 'sf', 1, 'a'));
   }
 
   // ── FINAL ──
