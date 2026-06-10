@@ -565,6 +565,8 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
     <div class="modal-list" id="modal-player-list"></div>
   </div>
 </div>
+
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -1935,8 +1937,6 @@ let cartolaModalSlot = null; // {pos, idx}
 let cartolaInited = false;
 let cartolaResultados = {}; // {playerId: {gol,assist,amarelo,vermelho,defesa}}
 let cartolaRankingUnsub = null;
-
-function F(cc){return`https://flagcdn.com/w40/${cc}.png`;}
 
 async function initCartola(){
   if(!currentUser) return;
