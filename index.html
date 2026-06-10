@@ -94,7 +94,68 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
 .b2{border-color:rgba(74,144,217,.3);color:rgba(74,144,217,.4)}.b2:hover,.b2.on{background:rgba(74,144,217,.2);border-color:var(--silver);color:var(--silver)}
 .b3{border-color:rgba(192,106,26,.3);color:rgba(192,106,26,.4)}.b3:hover,.b3.on{background:rgba(192,106,26,.2);border-color:var(--bronze);color:var(--bronze)}
 .b3.locked{opacity:.25;cursor:not-allowed;pointer-events:none}
-/* BRACKET VISUAL */
+/* CARTOLA */
+.cartola-wrap{display:grid;grid-template-columns:1fr 340px;gap:.9rem}
+@media(max-width:800px){.cartola-wrap{grid-template-columns:1fr}}
+.campo-svg{width:100%;border-radius:10px;overflow:hidden}
+.pos-section{margin-bottom:.7rem}
+.pos-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text2);text-transform:uppercase;margin-bottom:.4rem;padding-left:2px}
+.player-slot{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;margin-bottom:4px;cursor:pointer;transition:all .15s}
+.player-slot:hover{border-color:var(--gold);background:var(--bg4)}
+.player-slot.filled{border-color:rgba(212,160,23,.3);background:rgba(212,160,23,.04)}
+.player-slot.captain{border-color:var(--gold);background:rgba(212,160,23,.08)}
+.ps-flag{width:22px;height:15px;object-fit:cover;border-radius:2px;flex-shrink:0}
+.ps-info{flex:1;min-width:0}
+.ps-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps-pos{font-size:10px;color:var(--text2)}
+.ps-pts{font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;min-width:32px;text-align:right}
+.ps-cap{font-size:9px;background:var(--gold);color:#000;border-radius:3px;padding:1px 4px;font-weight:700;flex-shrink:0}
+.ps-empty{font-size:11px;color:var(--text3);font-style:italic}
+.ps-remove{font-size:14px;color:var(--text3);cursor:pointer;flex-shrink:0;padding:0 2px}
+.ps-remove:hover{color:var(--red)}
+/* Modal de seleção */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;width:100%;max-width:520px;max-height:80vh;display:flex;flex-direction:column}
+.modal-hdr{padding:1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:14px;font-weight:600}
+.modal-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer}
+.modal-search{padding:.7rem 1rem;border-bottom:1px solid var(--border)}
+.modal-search input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;font-family:'Outfit',sans-serif}
+.modal-search input:focus{border-color:var(--gold)}
+.modal-list{overflow-y:auto;padding:.5rem}
+.modal-player{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer;transition:background .1s}
+.modal-player:hover{background:var(--bg3)}
+.modal-player.selected{background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.2)}
+.mp-flag{width:28px;height:19px;object-fit:cover;border-radius:2px;flex-shrink:0}
+.mp-info{flex:1}
+.mp-name{font-size:12px;font-weight:600;color:var(--text)}
+.mp-detail{font-size:10px;color:var(--text2)}
+.mp-pos{font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;flex-shrink:0}
+.mp-pos.GOL{background:rgba(35,134,54,.2);color:#3fb950}
+.mp-pos.DEF{background:rgba(74,144,217,.2);color:#4a90d9}
+.mp-pos.MEI{background:rgba(212,160,23,.2);color:var(--gold)}
+.mp-pos.ATA{background:rgba(218,54,51,.2);color:#f85149}
+/* Painel direito */
+.cartola-side .card-title{font-size:13px}
+.pts-total{font-size:2.2rem;font-weight:700;color:var(--gold);text-align:center;line-height:1}
+.pts-label{font-size:10px;color:var(--text2);text-align:center;margin-top:2px}
+.pts-breakdown{margin-top:.8rem}
+.pts-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid var(--border)}
+.pts-row:last-child{border-bottom:none}
+.pts-row b{color:var(--text)}
+.pts-val{color:var(--gold);font-weight:600}
+.cartola-ranking .rank-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.cartola-ranking .rank-row:last-child{border-bottom:none}
+.rank-pos{font-size:11px;font-weight:700;color:var(--text2);min-width:18px}
+.rank-name{flex:1;font-size:12px;color:var(--text)}
+.rank-pts-c{font-size:13px;font-weight:700;color:var(--gold)}
+.scoring-table{width:100%;border-collapse:collapse;font-size:11px}
+.scoring-table td{padding:4px 6px;border-bottom:1px solid var(--border)}
+.scoring-table td:last-child{text-align:right;font-weight:700;color:var(--gold)}
+.btn-salvar-cartola{width:100%;padding:10px;background:var(--gold);color:#0d1117;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:.5rem}
+.btn-salvar-cartola:hover{filter:brightness(1.1)}
+.btn-salvar-cartola:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.cap-tip{font-size:10px;color:var(--text2);text-align:center;margin-top:4px}
 .vbracket-wrap{overflow-x:auto;overflow-y:hidden;padding:8px 0 12px}
 .vbracket-svg{display:block;min-width:900px}
 .vb-team{cursor:pointer}
@@ -281,6 +342,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
   <div class="tabs">
     <button class="tab active" id="tb-palpite" onclick="showTab('palpite')">⚽ Meu Palpite</button>
     <button class="tab" id="tb-ranking" onclick="showTab('ranking')">🏆 Ranking ao vivo</button>
+    <button class="tab" id="tb-cartola" onclick="showTab('cartola')">🎽 Cartola</button>
     <button class="tab" id="tb-analise" onclick="showTab('analise')">🔬 Análise IA</button>
     <button class="tab" id="tb-admin" onclick="showTab('admin')" style="display:none">⚙️ Admin</button>
     <button class="tab" id="tb-palpites-admin" onclick="showTab('palpites-admin')" style="display:none">👥 Ver Palpites</button>
@@ -396,10 +458,113 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
       </div>
     </div>
 
+    <!-- CARTOLA -->
+    <div id="pane-cartola" style="display:none">
+      <div class="cartola-wrap">
+        <!-- Coluna esquerda: escalação -->
+        <div>
+          <div class="card">
+            <div class="card-title">🎽 Minha Escalação — Copa 2026
+              <span style="margin-left:auto;font-size:10px;color:var(--text2)" id="cartola-deadline-txt"></span>
+            </div>
+            <div class="notice" id="cartola-notice">Monte seu time escolhendo 1 goleiro, 4 defensores, 3 meias e 3 atacantes. Clique em um slot para escolher o jogador. O <b>capitão</b> pontua em dobro!</div>
+
+            <!-- GOL -->
+            <div class="pos-section">
+              <div class="pos-label">🧤 Goleiro</div>
+              <div id="slots-GOL"></div>
+            </div>
+            <!-- DEF -->
+            <div class="pos-section">
+              <div class="pos-label">🛡️ Defensores</div>
+              <div id="slots-DEF"></div>
+            </div>
+            <!-- MEI -->
+            <div class="pos-section">
+              <div class="pos-label">⚙️ Meias</div>
+              <div id="slots-MEI"></div>
+            </div>
+            <!-- ATA -->
+            <div class="pos-section">
+              <div class="pos-label">⚡ Atacantes</div>
+              <div id="slots-ATA"></div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:.5rem;flex-wrap:wrap">
+              <button class="btn-salvar-cartola" id="btn-salvar-cartola" onclick="salvarCartola()">💾 Salvar Escalação</button>
+            </div>
+            <div class="cap-tip">💡 Clique duas vezes em um jogador escalado para definir como capitão (pontuação dupla)</div>
+            <div class="msg" id="cartola-msg" style="margin-top:.5rem;text-align:center"></div>
+          </div>
+        </div>
+
+        <!-- Coluna direita: pontuação + ranking -->
+        <div>
+          <!-- Meus pontos -->
+          <div class="card">
+            <div class="card-title">📊 Minha Pontuação</div>
+            <div class="pts-total" id="cartola-pts-total">0</div>
+            <div class="pts-label">pontos nesta rodada</div>
+            <div class="pts-breakdown" id="cartola-pts-breakdown"></div>
+          </div>
+
+          <!-- Tabela de pontuação -->
+          <div class="card">
+            <div class="card-title">📋 Tabela de Pontuação</div>
+            <table class="scoring-table">
+              <tr><td>⚽ Gol</td><td>+6 pts</td></tr>
+              <tr><td>🎯 Assistência</td><td>+3 pts</td></tr>
+              <tr><td>🟨 Cartão Amarelo</td><td>−1 pt</td></tr>
+              <tr><td>🟥 Cartão Vermelho</td><td>−3 pts</td></tr>
+              <tr><td>🧤 Defesa Difícil (GOL)</td><td>+2 pts</td></tr>
+              <tr><td>👑 Capitão (bônus)</td><td>×2</td></tr>
+            </table>
+          </div>
+
+          <!-- Ranking Cartola -->
+          <div class="card cartola-ranking">
+            <div class="card-title">🏆 Ranking Cartola</div>
+            <div id="cartola-ranking-list"><div style="font-size:11px;color:var(--text2)">Carregando...</div></div>
+          </div>
+
+          <!-- Admin: inserir resultados -->
+          <div class="card" id="cartola-admin-panel" style="display:none">
+            <div class="card-title">⚙️ Inserir Resultados (Admin)</div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:.7rem">Informe os eventos do jogo para calcular pontuações.</div>
+            <div style="margin-bottom:.5rem">
+              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px">Jogador</label>
+              <input id="adm-player-name" class="form-input" placeholder="Nome do jogador..." style="font-size:12px;padding:7px">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.5rem">
+              <div><label style="font-size:10px;color:var(--text2)">Gols</label><input id="adm-gols" type="number" min="0" value="0" class="form-input" style="font-size:12px;padding:6px"></div>
+              <div><label style="font-size:10px;color:var(--text2)">Assist.</label><input id="adm-assist" type="number" min="0" value="0" class="form-input" style="font-size:12px;padding:6px"></div>
+              <div><label style="font-size:10px;color:var(--text2)">Am. 🟨</label><input id="adm-amarelo" type="number" min="0" value="0" class="form-input" style="font-size:12px;padding:6px"></div>
+              <div><label style="font-size:10px;color:var(--text2)">Verm. 🟥</label><input id="adm-vermelho" type="number" min="0" value="0" class="form-input" style="font-size:12px;padding:6px"></div>
+              <div><label style="font-size:10px;color:var(--text2)">Def. Difíceis</label><input id="adm-defesas" type="number" min="0" value="0" class="form-input" style="font-size:12px;padding:6px"></div>
+            </div>
+            <button class="btn-go" style="width:100%;font-size:12px" onclick="adicionarResultadoCartola()">➕ Adicionar Evento</button>
+            <div id="adm-cartola-msg" class="msg" style="margin-top:.5rem;text-align:center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /main -->
 </div><!-- /app -->
 
-<script type="module">
+<!-- Modal seleção jogador -->
+<div class="modal-overlay" id="cartola-modal" style="display:none" onclick="fecharModal(event)">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <span class="modal-title" id="modal-title">Escolher Jogador</span>
+      <button class="modal-close" onclick="document.getElementById('cartola-modal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-search">
+      <input id="modal-search-input" placeholder="Buscar jogador ou seleção..." oninput="filtrarModal(this.value)">
+    </div>
+    <div class="modal-list" id="modal-player-list"></div>
+  </div>
+</div>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -1181,7 +1346,7 @@ window.closePalpiteDetail=()=>{
 
 // ── NAV ──
 window.showTab=(tab)=>{
-  ['palpite','ranking','admin','palpites-admin','analise'].forEach(t=>{
+  ['palpite','ranking','admin','palpites-admin','analise','cartola'].forEach(t=>{
     const el=document.getElementById('pane-'+t);if(el)el.style.display=t===tab?'':'none';
     const tb=document.getElementById('tb-'+t);if(tb)tb.classList.toggle('active',t===tab);
   });
@@ -1189,6 +1354,7 @@ window.showTab=(tab)=>{
   if(tab==='admin')loadAdminPanel();
   if(tab==='palpites-admin')loadPalpitesAdmin();
   if(tab==='analise')initAnalise();
+  if(tab==='cartola')initCartola();
 };
 window.showStep=(s)=>{
   ['grupos','bracket','artilheiro'].forEach(x=>{document.getElementById('step-'+x).style.display=x===s?'':'none';const b=document.getElementById('stb-'+x);if(b)b.classList.toggle('active',x===s);});
@@ -1715,6 +1881,321 @@ window.fecharAnalise=()=>{
   document.getElementById('analise-result').style.display='none';
   document.getElementById('analise-jogos-wrap').style.display='';
 };
+
+// ══════════════════════════════════════════════
+// 🎽 CARTOLA DA COPA 2026
+// ══════════════════════════════════════════════
+
+const CARTOLA_FORMATION = {GOL:1, DEF:4, MEI:3, ATA:3};
+const CARTOLA_PTS = {gol:6, assist:3, amarelo:-1, vermelho:-3, defesa:2};
+
+// Banco de jogadores disponíveis (top jogadores da Copa)
+const CARTOLA_PLAYERS = [
+  // GOLEIROS
+  {id:'g1',name:'Courtois',team:'Bélgica',cc:'be',pos:'GOL'},{id:'g2',name:'Ederson',team:'Brasil',cc:'br',pos:'GOL'},
+  {id:'g3',name:'Ter Stegen',team:'Alemanha',cc:'de',pos:'GOL'},{id:'g4',name:'Unai Simón',team:'Espanha',cc:'es',pos:'GOL'},
+  {id:'g5',name:'Lloris',team:'França',cc:'fr',pos:'GOL'},{id:'g6',name:'Pickford',team:'Inglaterra',cc:'gb-eng',pos:'GOL'},
+  {id:'g7',name:'Diogo Costa',team:'Portugal',cc:'pt',pos:'GOL'},{id:'g8',name:'E. Martínez',team:'Argentina',cc:'ar',pos:'GOL'},
+  {id:'g9',name:'Sommer',team:'Suíça',cc:'ch',pos:'GOL'},{id:'g10',name:'Ochoa',team:'México',cc:'mx',pos:'GOL'},
+  // DEFENSORES
+  {id:'d1',name:'R. Carvajal',team:'Espanha',cc:'es',pos:'DEF'},{id:'d2',name:'Rüdiger',team:'Alemanha',cc:'de',pos:'DEF'},
+  {id:'d3',name:'Dias',team:'Portugal',cc:'pt',pos:'DEF'},{id:'d4',name:'Militão',team:'Brasil',cc:'br',pos:'DEF'},
+  {id:'d5',name:'L. Hernández',team:'França',cc:'fr',pos:'DEF'},{id:'d6',name:'Walker',team:'Inglaterra',cc:'gb-eng',pos:'DEF'},
+  {id:'d7',name:'Vertonghen',team:'Bélgica',cc:'be',pos:'DEF'},{id:'d8',name:'Romero',team:'Argentina',cc:'ar',pos:'DEF'},
+  {id:'d9',name:'Marquinhos',team:'Brasil',cc:'br',pos:'DEF'},{id:'d10',name:'Upamecano',team:'França',cc:'fr',pos:'DEF'},
+  {id:'d11',name:'Akanji',team:'Suíça',cc:'ch',pos:'DEF'},{id:'d12',name:'Alexander-Arnold',team:'Inglaterra',cc:'gb-eng',pos:'DEF'},
+  {id:'d13',name:'Koné',team:'França',cc:'fr',pos:'DEF'},{id:'d14',name:'Gvardiol',team:'Croácia',cc:'hr',pos:'DEF'},
+  {id:'d15',name:'Kim Min-jae',team:'Coreia do Sul',cc:'kr',pos:'DEF'},{id:'d16',name:'Pepe',team:'Portugal',cc:'pt',pos:'DEF'},
+  // MEIAS
+  {id:'m1',name:'Modric',team:'Croácia',cc:'hr',pos:'MEI'},{id:'m2',name:'De Bruyne',team:'Bélgica',cc:'be',pos:'MEI'},
+  {id:'m3',name:'Kroos',team:'Alemanha',cc:'de',pos:'MEI'},{id:'m4',name:'Pedri',team:'Espanha',cc:'es',pos:'MEI'},
+  {id:'m5',name:'Camavinga',team:'França',cc:'fr',pos:'MEI'},{id:'m6',name:'Bellingham',team:'Inglaterra',cc:'gb-eng',pos:'MEI'},
+  {id:'m7',name:'B. Fernandes',team:'Portugal',cc:'pt',pos:'MEI'},{id:'m8',name:'Enzo Fernández',team:'Argentina',cc:'ar',pos:'MEI'},
+  {id:'m9',name:'Gündogan',team:'Alemanha',cc:'de',pos:'MEI'},{id:'m10',name:'F. Valverde',team:'Uruguai',cc:'uy',pos:'MEI'},
+  {id:'m11',name:'Tchouaméni',team:'França',cc:'fr',pos:'MEI'},{id:'m12',name:'M. Verratti',team:'França',cc:'fr',pos:'MEI'},
+  {id:'m13',name:'Xhaka',team:'Suíça',cc:'ch',pos:'MEI'},{id:'m14',name:'Mac Allister',team:'Argentina',cc:'ar',pos:'MEI'},
+  {id:'m15',name:'Lucas Paquetá',team:'Brasil',cc:'br',pos:'MEI'},{id:'m16',name:'Zielinski',team:'Portugal',cc:'pt',pos:'MEI'},
+  // ATACANTES
+  {id:'a1',name:'Mbappé',team:'França',cc:'fr',pos:'ATA'},{id:'a2',name:'Haaland',team:'Noruega',cc:'no',pos:'ATA'},
+  {id:'a3',name:'Vinícius Jr.',team:'Brasil',cc:'br',pos:'ATA'},{id:'a4',name:'Yamal',team:'Espanha',cc:'es',pos:'ATA'},
+  {id:'a5',name:'Messi',team:'Argentina',cc:'ar',pos:'ATA'},{id:'a6',name:'Lewandowski',team:'Polônia',cc:'pl',pos:'ATA'},
+  {id:'a7',name:'Kane',team:'Inglaterra',cc:'gb-eng',pos:'ATA'},{id:'a8',name:'Neymar',team:'Brasil',cc:'br',pos:'ATA'},
+  {id:'a9',name:'Raphinha',team:'Brasil',cc:'br',pos:'ATA'},{id:'a10',name:'Salah',team:'Egito',cc:'eg',pos:'ATA'},
+  {id:'a11',name:'Osimhen',team:'Nigéria',cc:'ng',pos:'ATA'},{id:'a12',name:'Gnabry',team:'Alemanha',cc:'de',pos:'ATA'},
+  {id:'a13',name:'Endrick',team:'Brasil',cc:'br',pos:'ATA'},{id:'a14',name:'J. Álvarez',team:'Argentina',cc:'ar',pos:'ATA'},
+  {id:'a15',name:'Olmo',team:'Espanha',cc:'es',pos:'ATA'},{id:'a16',name:'Havertz',team:'Alemanha',cc:'de',pos:'ATA'},
+  {id:'a17',name:'Chiesa',team:'Itália',cc:'it',pos:'ATA'},{id:'a18',name:'Díaz',team:'Colômbia',cc:'co',pos:'ATA'},
+  {id:'a19',name:'Diallo',team:'Senegal',cc:'sn',pos:'ATA'},{id:'a20',name:'Griezmann',team:'França',cc:'fr',pos:'ATA'},
+];
+
+// Estado do cartola
+let cartolaEscalacao = {GOL:[null], DEF:[null,null,null,null], MEI:[null,null,null], ATA:[null,null,null]};
+let cartolaCaptain = null; // player id
+let cartolaModalSlot = null; // {pos, idx}
+let cartolaInited = false;
+let cartolaResultados = {}; // {playerId: {gol,assist,amarelo,vermelho,defesa}}
+let cartolaRankingUnsub = null;
+
+function F(cc){return`https://flagcdn.com/w40/${cc}.png`;}
+
+async function initCartola(){
+  if(!currentUser) return;
+  // mostrar painel admin se for admin
+  try{
+    const snap=await getDoc(doc(db,'config','admin'));
+    if(snap.exists()&&(snap.data().uids||[]).includes(currentUser.uid)){
+      document.getElementById('cartola-admin-panel').style.display='';
+    }
+  }catch(e){}
+  // carregar escalação salva
+  await carregarEscalacao();
+  // carregar resultados
+  await carregarResultados();
+  renderSlots();
+  calcPontuacao();
+  carregarRankingCartola();
+}
+
+async function carregarEscalacao(){
+  try{
+    const snap=await getDoc(doc(db,'cartola',currentUser.uid));
+    if(snap.exists()){
+      const d=snap.data();
+      if(d.escalacao) cartolaEscalacao=d.escalacao;
+      if(d.captain) cartolaCaptain=d.captain;
+    }
+  }catch(e){}
+}
+
+async function carregarResultados(){
+  try{
+    const snap=await getDoc(doc(db,'cartola_resultados','global'));
+    if(snap.exists()) cartolaResultados=snap.data().resultados||{};
+  }catch(e){}
+}
+
+function renderSlots(){
+  ['GOL','DEF','MEI','ATA'].forEach(pos=>{
+    const container=document.getElementById('slots-'+pos);
+    if(!container) return;
+    container.innerHTML='';
+    cartolaEscalacao[pos].forEach((pid,idx)=>{
+      const player=pid?CARTOLA_PLAYERS.find(p=>p.id===pid):null;
+      const isCap=pid&&pid===cartolaCaptain;
+      const pts=pid?getPlayerPts(pid):0;
+      const div=document.createElement('div');
+      div.className='player-slot'+(player?' filled':'')+(isCap?' captain':'');
+      div.onclick=()=>abrirModal(pos,idx);
+      div.ondblclick=(e)=>{e.stopPropagation();if(pid)setCaptain(pid);};
+      if(player){
+        div.innerHTML=`
+          <img class="ps-flag" src="${F(player.cc)}" onerror="this.style.opacity=0">
+          <div class="ps-info"><div class="ps-name">${player.name}</div><div class="ps-pos">${player.team}</div></div>
+          ${isCap?'<span class="ps-cap">C</span>':''}
+          <span class="ps-pts">${pts>0?'+':''}${pts}</span>
+          <span class="ps-remove" onclick="removerJogador('${pos}',${idx},event)">✕</span>`;
+      } else {
+        div.innerHTML=`<span class="ps-empty">+ Escolher ${pos==='GOL'?'goleiro':pos==='DEF'?'defensor':pos==='MEI'?'meia':'atacante'}</span>`;
+      }
+      container.appendChild(div);
+    });
+  });
+}
+
+function getPlayerPts(pid){
+  const r=cartolaResultados[pid];
+  if(!r) return 0;
+  let pts=(r.gol||0)*CARTOLA_PTS.gol+(r.assist||0)*CARTOLA_PTS.assist+
+    (r.amarelo||0)*CARTOLA_PTS.amarelo+(r.vermelho||0)*CARTOLA_PTS.vermelho+
+    (r.defesa||0)*CARTOLA_PTS.defesa;
+  if(pid===cartolaCaptain) pts*=2;
+  return pts;
+}
+
+function calcPontuacao(){
+  let total=0;
+  const breakdown={gol:0,assist:0,amarelo:0,vermelho:0,defesa:0};
+  Object.values(cartolaEscalacao).flat().forEach(pid=>{
+    if(!pid) return;
+    const r=cartolaResultados[pid];
+    if(!r) return;
+    const mult=(pid===cartolaCaptain)?2:1;
+    breakdown.gol+=(r.gol||0)*CARTOLA_PTS.gol*mult;
+    breakdown.assist+=(r.assist||0)*CARTOLA_PTS.assist*mult;
+    breakdown.amarelo+=(r.amarelo||0)*CARTOLA_PTS.amarelo*mult;
+    breakdown.vermelho+=(r.vermelho||0)*CARTOLA_PTS.vermelho*mult;
+    breakdown.defesa+=(r.defesa||0)*CARTOLA_PTS.defesa*mult;
+  });
+  total=Object.values(breakdown).reduce((a,b)=>a+b,0);
+  document.getElementById('cartola-pts-total').textContent=total;
+  const bd=document.getElementById('cartola-pts-breakdown');
+  if(bd) bd.innerHTML=`
+    <div class="pts-row"><b>⚽ Gols</b><span class="pts-val">${breakdown.gol>=0?'+':''}${breakdown.gol}</span></div>
+    <div class="pts-row"><b>🎯 Assistências</b><span class="pts-val">${breakdown.assist>=0?'+':''}${breakdown.assist}</span></div>
+    <div class="pts-row"><b>🟨 Cartões Amarelos</b><span class="pts-val">${breakdown.amarelo}</span></div>
+    <div class="pts-row"><b>🟥 Cartões Vermelhos</b><span class="pts-val">${breakdown.vermelho}</span></div>
+    <div class="pts-row"><b>🧤 Defesas Difíceis</b><span class="pts-val">${breakdown.defesa>=0?'+':''}${breakdown.defesa}</span></div>
+    <div class="pts-row" style="margin-top:4px"><b style="color:var(--gold)">TOTAL</b><span class="pts-val" style="font-size:15px">${total}</span></div>`;
+}
+
+// Modal
+function abrirModal(pos, idx){
+  cartolaModalSlot={pos,idx};
+  document.getElementById('modal-title').textContent=`Escolher ${pos==='GOL'?'Goleiro':pos==='DEF'?'Defensor':pos==='MEI'?'Meia':'Atacante'}`;
+  document.getElementById('modal-search-input').value='';
+  renderModalList('');
+  document.getElementById('cartola-modal').style.display='flex';
+}
+
+function renderModalList(q){
+  const pos=cartolaModalSlot?.pos;
+  const list=document.getElementById('modal-player-list');
+  const allSelected=Object.values(cartolaEscalacao).flat().filter(Boolean);
+  const players=CARTOLA_PLAYERS.filter(p=>{
+    if(p.pos!==pos) return false;
+    if(q&&!p.name.toLowerCase().includes(q.toLowerCase())&&!p.team.toLowerCase().includes(q.toLowerCase())) return false;
+    return true;
+  });
+  list.innerHTML=players.map(p=>{
+    const isSel=allSelected.includes(p.id);
+    const isCur=cartolaEscalacao[pos][cartolaModalSlot.idx]===p.id;
+    return`<div class="modal-player${isCur?' selected':''}" onclick="selecionarJogador('${p.id}')" style="${isSel&&!isCur?'opacity:.4;pointer-events:none':''}">
+      <img class="mp-flag" src="${F(p.cc)}" onerror="this.style.opacity=0">
+      <div class="mp-info"><div class="mp-name">${p.name}</div><div class="mp-detail">${p.team}</div></div>
+      <span class="mp-pos ${pos}">${pos}</span>
+    </div>`;
+  }).join('');
+}
+
+window.filtrarModal=(q)=>renderModalList(q);
+window.fecharModal=(e)=>{if(e.target.id==='cartola-modal')document.getElementById('cartola-modal').style.display='none';};
+
+window.selecionarJogador=(pid)=>{
+  if(!cartolaModalSlot) return;
+  const {pos,idx}=cartolaModalSlot;
+  cartolaEscalacao[pos][idx]=pid;
+  document.getElementById('cartola-modal').style.display='none';
+  renderSlots();
+  calcPontuacao();
+};
+
+window.removerJogador=(pos,idx,e)=>{
+  e.stopPropagation();
+  const pid=cartolaEscalacao[pos][idx];
+  if(pid===cartolaCaptain) cartolaCaptain=null;
+  cartolaEscalacao[pos][idx]=null;
+  renderSlots();
+  calcPontuacao();
+};
+
+function setCaptain(pid){
+  cartolaCaptain=pid===cartolaCaptain?null:pid;
+  renderSlots();
+  calcPontuacao();
+}
+
+window.salvarCartola=async()=>{
+  if(!currentUser){setMsg('cartola-msg','Faça login primeiro','err');return;}
+  const btn=document.getElementById('btn-salvar-cartola');
+  btn.disabled=true;
+  btn.textContent='Salvando...';
+  try{
+    const total=calcTotalPts();
+    await setDoc(doc(db,'cartola',currentUser.uid),{
+      uid:currentUser.uid,
+      nome:currentUser.displayName||currentUser.email,
+      escalacao:cartolaEscalacao,
+      captain:cartolaCaptain||null,
+      pontos:total,
+      updatedAt:serverTimestamp()
+    });
+    setMsg('cartola-msg','✅ Escalação salva!','ok');
+    carregarRankingCartola();
+  }catch(e){setMsg('cartola-msg','Erro ao salvar: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='💾 Salvar Escalação';
+};
+
+function calcTotalPts(){
+  let total=0;
+  Object.values(cartolaEscalacao).flat().forEach(pid=>{
+    if(!pid) return;
+    const r=cartolaResultados[pid];
+    if(!r) return;
+    const mult=(pid===cartolaCaptain)?2:1;
+    total+=(r.gol||0)*CARTOLA_PTS.gol*mult+(r.assist||0)*CARTOLA_PTS.assist*mult+
+      (r.amarelo||0)*CARTOLA_PTS.amarelo*mult+(r.vermelho||0)*CARTOLA_PTS.vermelho*mult+
+      (r.defesa||0)*CARTOLA_PTS.defesa*mult;
+  });
+  return total;
+}
+
+async function carregarRankingCartola(){
+  const el=document.getElementById('cartola-ranking-list');
+  if(!el) return;
+  try{
+    const snaps=await getDocs(collection(db,'cartola'));
+    const rows=[];
+    snaps.forEach(d=>rows.push(d.data()));
+    rows.sort((a,b)=>(b.pontos||0)-(a.pontos||0));
+    el.innerHTML=rows.slice(0,10).map((r,i)=>`
+      <div class="rank-row">
+        <span class="rank-pos">${i+1}°</span>
+        <span class="rank-name">${r.nome||'Anônimo'}</span>
+        <span class="rank-pts-c">${r.pontos||0} pts</span>
+      </div>`).join('')||'<div style="font-size:11px;color:var(--text2)">Nenhuma escalação ainda.</div>';
+  }catch(e){el.innerHTML='<div style="font-size:11px;color:var(--red)">Erro ao carregar ranking.</div>';}
+}
+
+// Admin: adicionar resultado
+window.adicionarResultadoCartola=async()=>{
+  const name=document.getElementById('adm-player-name').value.trim();
+  if(!name){setMsg('adm-cartola-msg','Informe o nome do jogador','err');return;}
+  const player=CARTOLA_PLAYERS.find(p=>p.name.toLowerCase()===name.toLowerCase());
+  if(!player){setMsg('adm-cartola-msg','Jogador não encontrado na lista','err');return;}
+  const evento={
+    gol:parseInt(document.getElementById('adm-gols').value)||0,
+    assist:parseInt(document.getElementById('adm-assist').value)||0,
+    amarelo:parseInt(document.getElementById('adm-amarelo').value)||0,
+    vermelho:parseInt(document.getElementById('adm-vermelho').value)||0,
+    defesa:parseInt(document.getElementById('adm-defesas').value)||0,
+  };
+  try{
+    // Merge com resultados existentes
+    const snap=await getDoc(doc(db,'cartola_resultados','global'));
+    const existing=(snap.exists()&&snap.data().resultados)||{};
+    const prev=existing[player.id]||{gol:0,assist:0,amarelo:0,vermelho:0,defesa:0};
+    existing[player.id]={
+      gol:(prev.gol||0)+evento.gol,
+      assist:(prev.assist||0)+evento.assist,
+      amarelo:(prev.amarelo||0)+evento.amarelo,
+      vermelho:(prev.vermelho||0)+evento.vermelho,
+      defesa:(prev.defesa||0)+evento.defesa,
+    };
+    await setDoc(doc(db,'cartola_resultados','global'),{resultados:existing,updatedAt:serverTimestamp()});
+    // Atualizar pontuações de todos os usuários
+    const allSnaps=await getDocs(collection(db,'cartola'));
+    allSnaps.forEach(async(d)=>{
+      const data=d.data();
+      if(!data.escalacao) return;
+      let total=0;
+      Object.values(data.escalacao).flat().forEach(pid=>{
+        if(!pid) return;
+        const r=existing[pid];
+        if(!r) return;
+        const mult=(pid===data.captain)?2:1;
+        total+=(r.gol||0)*6*mult+(r.assist||0)*3*mult+(r.amarelo||0)*(-1)*mult+(r.vermelho||0)*(-3)*mult+(r.defesa||0)*2*mult;
+      });
+      await setDoc(doc(db,'cartola',d.id),{...data,pontos:total},{merge:true});
+    });
+    cartolaResultados=existing;
+    setMsg('adm-cartola-msg',`✅ Resultado de ${player.name} salvo!`,'ok');
+    renderSlots();calcPontuacao();carregarRankingCartola();
+    // Reset inputs
+    ['adm-gols','adm-assist','adm-amarelo','adm-vermelho','adm-defesas'].forEach(id=>document.getElementById(id).value=0);
+    document.getElementById('adm-player-name').value='';
+  }catch(e){setMsg('adm-cartola-msg','Erro: '+e.message,'err');}
+};
+
 </script>
 </body>
 </html>
