@@ -280,6 +280,7 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
   <div class="tabs">
     <button class="tab active" id="tb-palpite" onclick="showTab('palpite')">⚽ Meu Palpite</button>
     <button class="tab" id="tb-ranking" onclick="showTab('ranking')">🏆 Ranking ao vivo</button>
+    <button class="tab" id="tb-pix" onclick="showTab('pix')">💳 Pagamento PIX</button>
     <button class="tab" id="tb-analise" onclick="showTab('analise')">🔬 Análise IA</button>
     <button class="tab" id="tb-admin" onclick="showTab('admin')" style="display:none">⚙️ Admin</button>
     <button class="tab" id="tb-palpites-admin" onclick="showTab('palpites-admin')" style="display:none">👥 Ver Palpites</button>
@@ -392,6 +393,55 @@ body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--
       <div id="analise-result" style="display:none">
         <div class="bar" style="margin-bottom:.9rem"><button class="btn-sm" onclick="fecharAnalise()">← Voltar aos jogos</button></div>
         <div id="analise-content"></div>
+      </div>
+    </div>
+
+    <!-- PIX -->
+    <div id="pane-pix" style="display:none">
+      <div style="max-width:480px;margin:0 auto">
+        <div class="card" style="text-align:center">
+          <div class="card-title" style="justify-content:center">💳 Pagamento do Bolão</div>
+          <div style="font-size:13px;color:var(--text2);margin-bottom:1.2rem">Escaneie o QR Code ou copie a chave PIX para pagar sua entrada</div>
+
+          <!-- QR Code -->
+          <div id="pix-qr-wrap" style="display:inline-block;background:#fff;padding:16px;border-radius:12px;margin-bottom:1.2rem">
+            <canvas id="pix-qr-canvas"></canvas>
+          </div>
+
+          <!-- Valor -->
+          <div style="font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:.3rem">R$ 10,00</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:1.2rem">Valor da entrada no Bolão Copa 2026</div>
+
+          <!-- Dados PIX -->
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.9rem;text-align:left;margin-bottom:.9rem">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+              <span style="font-size:11px;color:var(--text2)">Chave PIX</span>
+              <button onclick="copiarChave()" style="font-size:10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--text2);padding:2px 8px;cursor:pointer">Copiar</button>
+            </div>
+            <div style="font-size:14px;font-weight:600;color:var(--text);letter-spacing:.03em">14998488278</div>
+          </div>
+
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.9rem;text-align:left;margin-bottom:.9rem">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:.3rem">Favorecido</div>
+            <div style="font-size:13px;color:var(--text)">Carlos Eduardo Silva Pires Dias</div>
+          </div>
+
+          <!-- Copia e Cola -->
+          <div style="margin-bottom:.9rem">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:.4rem;text-align:left">PIX Copia e Cola</div>
+            <div style="display:flex;gap:6px">
+              <div id="pix-payload-txt" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:10px;color:var(--text2);word-break:break-all;text-align:left;max-height:60px;overflow:hidden"></div>
+              <button onclick="copiarPayload()" style="flex-shrink:0;padding:7px 12px;background:var(--gold);color:#000;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Copiar</button>
+            </div>
+          </div>
+
+          <div id="pix-copy-msg" style="font-size:12px;color:var(--green);min-height:18px;margin-bottom:.5rem"></div>
+
+          <div style="font-size:10px;color:var(--text3);line-height:1.5">
+            Após o pagamento, avise o organizador pelo WhatsApp ou grupo.<br>
+            O prazo para envio do palpite encerra em 11/06 às 12h.
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1181,7 +1231,7 @@ window.closePalpiteDetail=()=>{
 
 // ── NAV ──
 window.showTab=(tab)=>{
-  ['palpite','ranking','admin','palpites-admin','analise'].forEach(t=>{
+  ['palpite','ranking','admin','palpites-admin','analise','pix'].forEach(t=>{
     const el=document.getElementById('pane-'+t);if(el)el.style.display=t===tab?'':'none';
     const tb=document.getElementById('tb-'+t);if(tb)tb.classList.toggle('active',t===tab);
   });
@@ -1189,6 +1239,7 @@ window.showTab=(tab)=>{
   if(tab==='admin')loadAdminPanel();
   if(tab==='palpites-admin')loadPalpitesAdmin();
   if(tab==='analise')initAnalise();
+  if(tab==='pix')initPix();
 };
 window.showStep=(s)=>{
   ['grupos','bracket','artilheiro'].forEach(x=>{document.getElementById('step-'+x).style.display=x===s?'':'none';const b=document.getElementById('stb-'+x);if(b)b.classList.toggle('active',x===s);});
@@ -1714,6 +1765,83 @@ Responda em português com exatamente este formato JSON (sem markdown, sem expli
 window.fecharAnalise=()=>{
   document.getElementById('analise-result').style.display='none';
   document.getElementById('analise-jogos-wrap').style.display='';
+};
+
+// ── PIX QR CODE ──
+const PIX_KEY   = '14998488278';
+const PIX_NAME  = 'Carlos E S P Dias'; // max 25 chars
+const PIX_CITY  = 'Ourinhos';
+const PIX_VALUE = '10.00';
+const PIX_DESC  = 'Bolao Copa 2026';
+
+function pixPayload(){
+  function field(id, val){ return id + String(val.length).padStart(2,'0') + val; }
+  function crc16(str){
+    let crc=0xFFFF;
+    for(let i=0;i<str.length;i++){
+      crc^=str.charCodeAt(i)<<8;
+      for(let j=0;j<8;j++) crc=crc&0x8000?(crc<<1)^0x1021:(crc<<1);
+    }
+    return((crc&0xFFFF).toString(16).toUpperCase().padStart(4,'0'));
+  }
+  const gui   = field('00','BR.GOV.BCB.PIX') + field('01', PIX_KEY);
+  const ma    = field('26', gui);
+  const add   = field('02', PIX_DESC);
+  const txinfo= field('05', add);
+  const merch = '0002BR' +
+    field('59', PIX_NAME.substring(0,25)) +
+    field('60', PIX_CITY.substring(0,15)) +
+    '5303986' +
+    field('54', PIX_VALUE) +
+    '5802BR' + ma + txinfo + '6304';
+  return merch + crc16(merch + '6304');
+}
+
+let pixInited = false;
+async function initPix(){
+  if(pixInited) return;
+  pixInited = true;
+  const payload = pixPayload();
+  document.getElementById('pix-payload-txt').textContent = payload;
+  // Load QRCode.js from CDN and render
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js');
+  const canvas = document.getElementById('pix-qr-canvas');
+  new QRCode(canvas.parentElement, {
+    text: payload,
+    width: 200,
+    height: 200,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+  // Remove the placeholder canvas (QRCode.js adds its own)
+  canvas.remove();
+}
+
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    if(document.querySelector(`script[src="${src}"]`)){res();return;}
+    const s=document.createElement('script');
+    s.src=src;s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
+
+window.copiarChave=()=>{
+  navigator.clipboard.writeText(PIX_KEY).then(()=>{
+    const m=document.getElementById('pix-copy-msg');
+    m.textContent='✅ Chave PIX copiada!';
+    setTimeout(()=>m.textContent='',2500);
+  });
+};
+
+window.copiarPayload=()=>{
+  const p=document.getElementById('pix-payload-txt').textContent;
+  navigator.clipboard.writeText(p).then(()=>{
+    const m=document.getElementById('pix-copy-msg');
+    m.textContent='✅ PIX copia e cola copiado!';
+    setTimeout(()=>m.textContent='',2500);
+  });
 };
 </script>
 </body>
